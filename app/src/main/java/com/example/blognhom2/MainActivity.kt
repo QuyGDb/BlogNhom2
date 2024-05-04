@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //chuyển qua các fragment
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when(it.itemId){
+        binding.bottomBar.setOnItemSelectedListener {
+            when(it){
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.categories -> replaceFragment(CategoriesFragment())
                 R.id.write -> replaceFragment(WriteFragment())
