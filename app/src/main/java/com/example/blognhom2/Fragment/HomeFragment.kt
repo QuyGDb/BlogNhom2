@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.denzcoskun.imageslider.models.SlideModel
+import com.example.blognhom2.Adapter.PostAdapter
 import com.example.blognhom2.databinding.FragmentHomeBinding
+import com.example.blognhom2.model.Post
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +47,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initImageView()
-
+        SetPostAdapter()
         // Inflate the layout for this fragment
         val view = binding.root
         return view
@@ -57,6 +62,20 @@ class HomeFragment : Fragment() {
 
         val imageSlider = binding.imageSlider
         imageSlider.setImageList(imageList)
+    }
+    private fun SetPostAdapter(){
+        val postList = mutableListOf<Post>()
+        val post1 = Post("May 5, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 1", "Category 1")
+        val post2 = Post("May 4, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 2", "Category 2")
+        val post3 = Post("May 3, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 3", "Category 3")
+
+        postList.add(post1)
+        postList.add(post2)
+        postList.add(post3)
+
+        val adapter = PostAdapter(postList)
+        binding.PostRecyclerView.adapter = adapter
+        binding.PostRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
     }
     companion object {
         /**
