@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.blognhom2.Adapter.PostAdapter
 import com.example.blognhom2.databinding.FragmentHomeBinding
 import com.example.blognhom2.model.Post
+import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,6 +39,8 @@ class HomeFragment : Fragment() {
         }
     }
     private var _binding: FragmentHomeBinding? = null
+    private var postList = mutableListOf<Post>()
+    lateinit var adapter : PostAdapter
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -48,6 +53,7 @@ class HomeFragment : Fragment() {
 
         initImageView()
         SetPostAdapter()
+        SetSearchView()
         // Inflate the layout for this fragment
         val view = binding.root
         return view
@@ -64,18 +70,53 @@ class HomeFragment : Fragment() {
         imageSlider.setImageList(imageList)
     }
     private fun SetPostAdapter(){
-        val postList = mutableListOf<Post>()
-        val post1 = Post("May 5, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 1", "Category 1")
-        val post2 = Post("May 4, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 2", "Category 2")
-        val post3 = Post("May 3, 2024", "https://images.immediate.co.uk/production/volatile/sites/3/2017/07/142723.b2a13431-ff0a-4480-96a9-a1114573b3f4.jpg?quality=90&resize=620,414", "Title 3", "Category 3")
 
+
+        val post1 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","testcontent")
+        val post2 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg", "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn", "Game", "testcontent")
+        val post3 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png", "Elden Ring - Siêu phẩm hay game rác?", "Game","testcontent")
+        val post4 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","testcontent")
+        val post5 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg", "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn", "Game","testcontent")
+        val post6 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png", "Elden Ring - Siêu phẩm hay game rác?", "Game","testcontent")
         postList.add(post1)
         postList.add(post2)
         postList.add(post3)
-
-        val adapter = PostAdapter(postList)
+        postList.add(post4)
+        postList.add(post5)
+        postList.add(post6)
+        adapter = PostAdapter(postList)
         binding.PostRecyclerView.adapter = adapter
         binding.PostRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+
+    }
+    private fun SetSearchView(){
+        binding.seachView.clearFocus()
+        binding.seachView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterList(newText)
+                return true
+            }
+
+        } )
+    }
+    private fun filterList(query : String?){
+    if (query != null){
+        val filteredList = mutableListOf<Post>()
+        for (post in postList){
+            if(post.Title.lowercase(Locale.ROOT).contains(query)){
+                filteredList.add(post)
+            }
+        }
+        if(filteredList.isEmpty()){
+            Toast.makeText(requireContext(), "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()
+        } else{
+            adapter.setFilteredList(filteredList)
+        }
+    }
     }
     companion object {
         /**

@@ -19,7 +19,10 @@ class PostAdapter(var postList : List<Post>) : RecyclerView.Adapter<PostAdapter.
         var postTime: TextView = itemView.findViewById(R.id.articleDateTime)
         var postCategory: TextView = itemView.findViewById(R.id.articleCategories)
     }
-
+    public fun setFilteredList(filteredList: List<Post>){
+        this.postList = filteredList
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         return PostViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false)
@@ -34,7 +37,7 @@ class PostAdapter(var postList : List<Post>) : RecyclerView.Adapter<PostAdapter.
         holder.itemView.apply {
 
             holder.postTitle.text = postList[position].Title
-            holder.postTime.text = postList[position].time
+            holder.postTime.text = postList[position].time.toString()
             holder.postCategory.text = postList[position].categories
             Glide.with(holder.itemView.context)
                 .load(postList[position].postImg)

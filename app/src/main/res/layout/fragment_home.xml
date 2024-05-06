@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,20 +23,32 @@
             app:iss_text_align="CENTER" />
 
         <androidx.appcompat.widget.SearchView
+            android:id="@+id/seachView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:queryHint="Search here ..."
+            app:iconifiedByDefault="false"
             android:layout_below="@+id/image_slider"
+            android:background="@drawable/search_view_bg"
             android:layout_marginTop="25dp" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gợi ý"
-            android:textSize="30dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/alata"
+            android:text="Gợi ý bài viết"
+            android:textColor="#220F25"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/PostRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
