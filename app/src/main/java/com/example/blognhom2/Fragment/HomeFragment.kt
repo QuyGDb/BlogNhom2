@@ -16,30 +16,11 @@ import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
     private var _binding: FragmentHomeBinding? = null
-    private var postList = mutableListOf<Post>()
+
     lateinit var adapter : PostAdapter
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -52,6 +33,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initImageView()
+        preparePostData()
         SetPostAdapter()
         SetSearchView()
         // Inflate the layout for this fragment
@@ -69,21 +51,70 @@ class HomeFragment : Fragment() {
         val imageSlider = binding.imageSlider
         imageSlider.setImageList(imageList)
     }
+    companion object {
+        private var postList = mutableListOf<Post>()
+        fun preparePostData() : List<Post> {
+            val post1 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg",
+                "The Dark Knight",
+                "Movie",
+                "Để giới hạn số ký tự được hiển thị trong một TextView trong ứng dụng Android Studio, bạn có thể sử dụng một số phương pháp khác nhau. Dưới đây là một số cách phổ biến:"
+            )
+            val post2 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg",
+                "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn",
+                "Game",
+                "testcontent"
+            )
+            val post3 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png",
+                "Elden Ring - Siêu phẩm hay game rác?",
+                "Game",
+                "testcontent"
+            )
+            val post4 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg",
+                "The Dark Knight",
+                "Movie",
+                "testcontent"
+            )
+            val post5 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg",
+                "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn",
+                "Game",
+                "testcontent"
+            )
+            val post6 = Post(
+                "Trinhquy",
+                LocalDate.now(),
+                "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png",
+                "Elden Ring - Siêu phẩm hay game rác?",
+                "Game",
+                "testcontent"
+            )
+            postList.add(post1)
+            postList.add(post2)
+            postList.add(post3)
+            postList.add(post4)
+            postList.add(post5)
+            postList.add(post6)
+            return postList
+        }
+    }
     private fun SetPostAdapter(){
 
 
-        val post1 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","Để giới hạn số ký tự được hiển thị trong một TextView trong ứng dụng Android Studio, bạn có thể sử dụng một số phương pháp khác nhau. Dưới đây là một số cách phổ biến:")
-        val post2 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg", "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn", "Game", "testcontent")
-        val post3 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png", "Elden Ring - Siêu phẩm hay game rác?", "Game","testcontent")
-        val post4 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","testcontent")
-        val post5 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg", "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn", "Game","testcontent")
-        val post6 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png", "Elden Ring - Siêu phẩm hay game rác?", "Game","testcontent")
-        postList.add(post1)
-        postList.add(post2)
-        postList.add(post3)
-        postList.add(post4)
-        postList.add(post5)
-        postList.add(post6)
+
         adapter = PostAdapter(postList)
         binding.PostRecyclerView.adapter = adapter
         binding.PostRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
@@ -97,13 +128,13 @@ class HomeFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterList(newText)
+                searchList(newText)
                 return true
             }
 
         } )
     }
-    private fun filterList(query : String?){
+    private fun searchList(query : String?){
     if (query != null){
         val filteredList = mutableListOf<Post>()
         for (post in postList){
@@ -118,25 +149,7 @@ class HomeFragment : Fragment() {
         }
     }
     }
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
