@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initImageView()
@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
     private fun SetPostAdapter(){
 
 
-        val post1 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","testcontent")
+        val post1 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","Để giới hạn số ký tự được hiển thị trong một TextView trong ứng dụng Android Studio, bạn có thể sử dụng một số phương pháp khác nhau. Dưới đây là một số cách phổ biến:")
         val post2 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg", "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn", "Game", "testcontent")
         val post3 = Post("Trinhquy", LocalDate.now(),"https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png", "Elden Ring - Siêu phẩm hay game rác?", "Game","testcontent")
         val post4 = Post("Trinhquy",LocalDate.now(), "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg", "The Dark Knight", "Movie","testcontent")
@@ -107,12 +107,12 @@ class HomeFragment : Fragment() {
     if (query != null){
         val filteredList = mutableListOf<Post>()
         for (post in postList){
-            if(post.Title.lowercase(Locale.ROOT).contains(query)){
+            if(post.title.lowercase(Locale.ROOT).contains(query)){
                 filteredList.add(post)
             }
         }
         if(filteredList.isEmpty()){
-            Toast.makeText(requireContext(), "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Không tìm thấy bài viết", Toast.LENGTH_LONG).show()
         } else{
             adapter.setFilteredList(filteredList)
         }

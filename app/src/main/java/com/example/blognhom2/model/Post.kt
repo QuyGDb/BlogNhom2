@@ -4,10 +4,10 @@ import java.time.LocalDate
 import java.util.Date
 
 data class Post (
-    val actor : String,
+    val user : String,
     val time : LocalDate,
     val postImg : String,
-    val Title : String,
+    val title : String,
     val categories: String,
     val postContent: String
 )

@@ -1,14 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.PostContentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/postTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="TITLE ajdcn clabfca cll abcaolc nwjabc "
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/postUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="actor"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postTitle" />
+
+                <TextView
+                    android:id="@+id/postTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="time"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postTitle" />
+
+                <TextView
+                    android:id="@+id/postCategories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="categories"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postUser" />
+
+                <ImageView
+                    android:id="@+id/postImage"
+                    android:layout_width="408dp"
+                    android:layout_height="280dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postCategories" />
+
+                <TextView
+                    android:id="@+id/postContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="      Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.ưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn."
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/postImage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

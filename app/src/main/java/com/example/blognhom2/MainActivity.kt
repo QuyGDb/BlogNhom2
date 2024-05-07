@@ -27,8 +27,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun transFragment() {
+
         binding.bottomBar.setOnItemSelectedListener {
+
             when (it) {
+
                 0 -> replaceFragment(HomeFragment())
                 1 -> replaceFragment(CategoriesFragment())
                 2 -> replaceFragment(WriteFragment())
