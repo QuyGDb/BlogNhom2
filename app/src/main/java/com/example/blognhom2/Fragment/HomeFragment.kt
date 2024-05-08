@@ -53,8 +53,10 @@ class HomeFragment : Fragment() {
     }
     companion object {
         private var postList = mutableListOf<Post>()
+
         fun preparePostData() : List<Post> {
-            val post1 = Post(
+            postList.clear()
+            val post1 = Post("123",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg",
@@ -62,44 +64,44 @@ class HomeFragment : Fragment() {
                 "Movie",
                 "Để giới hạn số ký tự được hiển thị trong một TextView trong ứng dụng Android Studio, bạn có thể sử dụng một số phương pháp khác nhau. Dưới đây là một số cách phổ biến:"
             )
-            val post2 = Post(
+            val post2 = Post("456",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg",
                 "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn",
-                "Game",
+                "Anime",
                 "testcontent"
             )
-            val post3 = Post(
+            val post3 = Post("789",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png",
                 "Elden Ring - Siêu phẩm hay game rác?",
-                "Game",
+                "Music",
                 "testcontent"
             )
-            val post4 = Post(
+            val post4 = Post("0123",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/56a4d870-e3f1-4085-b6ef-2aae4d17641b.jpg",
-                "The Dark Knight",
+                "Vô gian đạo",
                 "Movie",
                 "testcontent"
             )
-            val post5 = Post(
+            val post5 = Post("1234",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/b8f2ad85-2cae-47d5-af6a-1db3432fe5c3.jpg",
-                "Sekiro: Shadows Die Twice - Vẻ đẹp ẩn sau lớp vỏ khó nhằn",
+                "Lie of P",
                 "Game",
                 "testcontent"
             )
-            val post6 = Post(
+            val post6 = Post("5678",
                 "Trinhquy",
                 LocalDate.now(),
                 "https://raw.githubusercontent.com/jackson22153fake/BlogImgRepository/main/849dca8f-4ab9-4eb9-99db-34ad6c74d0c2.png",
-                "Elden Ring - Siêu phẩm hay game rác?",
-                "Game",
+                "Ngọt",
+                "Music",
                 "testcontent"
             )
             postList.add(post1)
