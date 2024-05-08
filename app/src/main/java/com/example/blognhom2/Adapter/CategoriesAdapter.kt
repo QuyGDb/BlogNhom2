@@ -21,7 +21,7 @@ class CategoriesAdapter(var categoriesList : List<Categories>, var posts : Mutab
         val categoriesTxt: TextView = itemView.findViewById(R.id.categoriesTxt)
         val categoriesImage: ImageView = itemView.findViewById(R.id.categoriesImage)
         val childRecyclerView : RecyclerView = itemView.findViewById(R.id.childRecyclerView)
-        val categoriesCardview : CardView = itemView.findViewById(R.id.categoriesCardView)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
@@ -35,20 +35,16 @@ class CategoriesAdapter(var categoriesList : List<Categories>, var posts : Mutab
     }
 
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
-
         holder.itemView.apply {
-            val category = categoriesList[position]
             holder.categoriesTxt.text = categoriesList[position].categories
 
-            val isExpandable = category.isExpandable
-            holder.childRecyclerView.visibility = if(isExpandable) View.VISIBLE else View.GONE
-            holder.categoriesCardview.setOnClickListener {
-                category.isExpandable = !category.isExpandable
-                notifyItemChanged(position)
-            }
 
-            categoriesFragment.GetImageFromUnsplash(category.categories, holder.categoriesImage, holder.itemView.context)
+
+            categoriesFragment.GetImageFromUnsplash(categoriesList[position].categories, holder.categoriesImage, holder.itemView.context)
             setOnClickListener {
+                categoriesList[position].isExpandable = !categoriesList[position].isExpandable
+
+                holder.childRecyclerView.visibility = if(categoriesList[position].isExpandable) View.VISIBLE else View.GONE
 
                 FindPostByCategories(holder.categoriesTxt.text.toString(), posts )
                 val adapter = PostAdapter(postsByCategories)

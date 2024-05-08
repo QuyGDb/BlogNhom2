@@ -24,6 +24,7 @@
                     android:ellipsize="end"
                     android:text="TITLE ajdcn clabfca cll abcaolc nwjabc "
                     android:textColor="@color/black"
+                    android:fontFamily="@font/"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintRight_toRightOf="parent"
@@ -85,6 +86,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+
                     android:text="      Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.ưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn.Lưu ý rằng trong cả hai trường hợp, bạn cần thay đổi giá trị margin cho TextView 1 và TextView 2 một cách thích hợp để tạo ra khoảng cách mong muốn."
                     android:textColor="@color/black"
                     android:textSize="20sp"
