@@ -26,8 +26,8 @@ class CategoriesFragment : Fragment() {
     private var categoriesList = mutableListOf<Categories>()
     private var posts = mutableListOf<Post>()
     lateinit var adapter: CategoriesAdapter
-    private var _binding: FragmentCategoriesBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentCategoriesBinding
+//    private val binding get() = _binding!!
     private var oneTime : Boolean = true
 
 
@@ -35,8 +35,8 @@ class CategoriesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentCategoriesBinding.inflate(inflater, container, false)
 
 
         //cal prepareDate 1 lần duy nhất
@@ -72,6 +72,7 @@ class CategoriesFragment : Fragment() {
                 Glide.with(context)
                     .load(photoUrl)
                     .into(imageView)
+                binding.loading.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
@@ -88,6 +89,5 @@ class CategoriesFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }
