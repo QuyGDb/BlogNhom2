@@ -3,11 +3,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/postLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@drawable/post_shape">
 
     <ImageView
         android:id="@+id/articleImage"
@@ -69,18 +69,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/articleDescription" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="122dp"
-        android:background="@color/black"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
