@@ -1,60 +1,142 @@
 package com.example.blognhom2.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.blognhom2.R
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.blognhom2.API.PostApi
+import com.example.blognhom2.Adapter.PostAdapter
+import com.example.blognhom2.databinding.FragmentProfileBinding
+import com.example.blognhom2.model.PostInfo
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
+
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var isLoading = false
+    private var visibleThreshold = 5 // Number of items from the bottom of the list at which loading more is triggered
+    private var offset = 0 // The offset for loading more posts
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentProfileBinding? = null
+
+    lateinit var adapter : PostAdapter
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        preparePostData()
+        SetPostAdapter()
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = binding.root
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private var postList = mutableListOf<PostInfo>()
+    private fun preparePostData() : List<PostInfo> {
+        postList.clear()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val api = retrofit.create(PostApi::class.java)
+        val call = api.getPosts(0)
+
+        call.enqueue(object : Callback<List<PostInfo>> {
+            override fun onResponse(call: Call<List<PostInfo>>, response: Response<List<PostInfo>>) {
+                println("ResponsePost")
+                println(response)
+                if (!response.isSuccessful) {
+                    println("Code: " + response.code())
+                    return
+                }
+
+                val posts = response.body()
+                posts?.let {
+                    postList.addAll(it)
+                }
+                updateAdapter()
+            }
+
+            override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
+                println(t.message)
+            }
+        })
+
+        return postList
+    }
+
+    private fun updateAdapter() {
+        adapter.setFilteredList(postList)
+    }
+    private fun SetPostAdapter(){
+        adapter = PostAdapter(postList)
+        binding.PostRecyclerView.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+        binding.PostRecyclerView.layoutManager = layoutManager
+
+        // Add the onScrollListener to your RecyclerView
+        binding.PostRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    // End has been reached, load more items
+                    loadMoreItems()
+                    isLoading = true
                 }
             }
+        })
     }
+
+    private fun loadMoreItems() {
+        // Increase your offset
+        offset += 1
+
+        // Call your API here
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val api = retrofit.create(PostApi::class.java)
+        val call = api.getPosts(offset)
+
+        call.enqueue(object : Callback<List<PostInfo>> {
+            override fun onResponse(call: Call<List<PostInfo>>, response: Response<List<PostInfo>>) {
+                println(response)
+                if (response.isSuccessful) {
+                    val posts = response.body()
+                    posts?.let {
+                        postList.addAll(it)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                isLoading = false
+            }
+
+            override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
+                // Handle the error
+                isLoading = false
+            }
+        })
+    }
+
 }
