@@ -19,6 +19,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
+
+
 class OwnerPost : Fragment() {
     private var isLoading = false
     private var visibleThreshold = 5 // Number of items from the bottom of the list at which loading more is triggered
@@ -76,6 +78,7 @@ class OwnerPost : Fragment() {
                 println(t.message)
             }
         })
+
 
         val post1 = PostInfo(123,
             "TQ",
@@ -137,7 +140,6 @@ class OwnerPost : Fragment() {
         postList.add(post4)
         postList.add(post5)
         postList.add(post6)
-
         return postList
     }
 
