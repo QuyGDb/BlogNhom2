@@ -1,6 +1,5 @@
 package com.example.blognhom2.model
 
-import java.time.LocalDate
 
 data class PostInfo (
     val id : Int,

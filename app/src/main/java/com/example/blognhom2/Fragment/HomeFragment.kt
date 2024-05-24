@@ -52,10 +52,11 @@ class HomeFragment : Fragment() {
         val imageList = ArrayList<SlideModel>() // Create image list
 
 
-        imageList.add(SlideModel("https://cdn.oneesports.vn/cdn-data/sites/4/2023/12/Anime-top2023-1024x576.jpg", "Chào bạn dã đến với blog của nhóm 2 chúng tôi."))
-        imageList.add(SlideModel("https://cdn.mos.cms.futurecdn.net/9xBT864XC3j5wcZRPgQapa-650-80.png.webp", "Elephants and tigers may become extinct."))
-        imageList.add(SlideModel("https://static0.srcdn.com/wordpress/wp-content/uploads/2023/11/greatest-movies-of-all-time.jpg", "And people do that."))
-
+        imageList.add(SlideModel("https://cdn.oneesports.vn/cdn-data/sites/4/2023/12/Anime-top2023-1024x576.jpg", "A blog where you can share your knowledge and hobbies with the world."))
+        imageList.add(SlideModel("https://cdn.mos.cms.futurecdn.net/9xBT864XC3j5wcZRPgQapa-650-80.png.webp", "A place to connect with others who share your interests."))
+        imageList.add(SlideModel("https://static0.srcdn.com/wordpress/wp-content/uploads/2023/11/greatest-movies-of-all-time.jpg", "A platform to learn new things and expand your horizons."))
+        imageList.add(SlideModel("https://blog.vietvocal.com/wp-content/uploads/2022/07/nhac-indie-la-gi-3.png","A community where you can be yourself and share your unique perspective."))
+        imageList.add(SlideModel("https://cdn.vietnambiz.vn/2019/12/17/information-technology-1576573656679551966283.jpg", "A blog that is dedicated to helping you live your best life."))
         val imageSlider = binding.imageSlider
         imageSlider.setImageList(imageList)
     }
@@ -85,7 +86,8 @@ class HomeFragment : Fragment() {
                     posts?.let {
                         postList.addAll(it);
                     }
-                    updateAdapter()
+                    SetPostAdapter()
+
                 }
 
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
@@ -96,9 +98,6 @@ class HomeFragment : Fragment() {
             return postList
         }
 
-    private fun updateAdapter() {
-        adapter.setFilteredList(postList)
-    }
     private fun SetPostAdapter(){
         adapter = PostAdapter(postList)
         binding.PostRecyclerView.adapter = adapter

@@ -29,9 +29,6 @@ class CategoriesFragment : Fragment() {
     lateinit var adapter: CategoriesAdapter
     private var _binding: FragmentCategoriesBinding? = null
     private val binding get() = _binding!!
-    private var oneTime : Boolean = true
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,18 +36,14 @@ class CategoriesFragment : Fragment() {
     ): View? {
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
 
-
-        //cal prepareDate 1 lần duy nhất
-        if(oneTime) {
             prepareData()
 
-            oneTime = false
-        }
         val view = binding.root
         return view
     }
 
     private fun prepareData(){
+        categoriesList.clear()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
