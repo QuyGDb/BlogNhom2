@@ -5,11 +5,11 @@ import java.util.Date
 
 data class Post (
     val id : String,
-    val userID : Int,
+    val user : String,
     val time : LocalDate,
-    val postImg : String,
+    val img : String,
     val title : String,
-    val categories: String,
-    val postContent: String,
-    val postContentID: Int
+    val category: String,
+    val content: String,
+    val status: String
 )

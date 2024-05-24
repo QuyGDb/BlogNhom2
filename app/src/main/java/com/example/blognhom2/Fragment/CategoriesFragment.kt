@@ -47,7 +47,6 @@ class CategoriesFragment : Fragment() {
 
             oneTime = false
         }
-        SetCategoriesAdapter()
         val view = binding.root
         return view
     }
@@ -75,8 +74,8 @@ class CategoriesFragment : Fragment() {
                 categories?.let {
                     categoriesList.addAll(it)
                 }
-
-                updateAdapter()
+                SetCategoriesAdapter()
+//                updateAdapter()
                 // Do something with the posts
 //                    println(posts)
             }

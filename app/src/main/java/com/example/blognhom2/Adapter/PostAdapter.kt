@@ -54,10 +54,10 @@ class PostAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<PostAdap
             holder.postLayout.startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim))
             holder.postTitle.text = genericList[position].title
             holder.postTime.text = genericList[position].time.toString()
-            holder.postCategory.text = genericList[position].categories
-//            holder.postContent.text = genericList[position].postContent
+            holder.postCategory.text = genericList[position].category
+            holder.postContent.text = genericList[position].content
             Glide.with(holder.itemView.context)
-                .load(genericList[position].postImg)
+                .load(genericList[position].img)
                 .into(holder.postImage)
 
             setOnClickListener {
