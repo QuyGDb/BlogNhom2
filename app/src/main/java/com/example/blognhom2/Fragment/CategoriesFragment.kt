@@ -14,7 +14,6 @@ import com.example.blognhom2.API.UnsplashApi
 import com.example.blognhom2.Adapter.CategoriesAdapter
 import com.example.blognhom2.databinding.FragmentCategoriesBinding
 import com.example.blognhom2.model.Category
-import com.example.blognhom2.model.Post
 import com.example.blognhom2.model.PostInfo
 import com.example.blognhom2.model.SearchResult
 import retrofit2.Call
@@ -52,8 +51,6 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun prepareData(){
-//        posts = HomeFragment.preparePostData() as MutableList<PostInfo>
-
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -75,9 +72,7 @@ class CategoriesFragment : Fragment() {
                     categoriesList.addAll(it)
                 }
                 SetCategoriesAdapter()
-//                updateAdapter()
-                // Do something with the posts
-//                    println(posts)
+
             }
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
@@ -114,10 +109,6 @@ class CategoriesFragment : Fragment() {
         binding.categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun updateAdapter() {
-        // Assuming 'adapter' is a global variable
-        adapter.setData(categoriesList, posts)
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

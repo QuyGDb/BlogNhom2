@@ -7,9 +7,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PostApi {
-//    recommended posts
-    @GET("posts/recommendedPosts")
-    fun getRecommendedPosts(): Call<List<PostInfo>>
+
 //    categories
     @GET("posts/categories")
     fun getCategories(): Call<List<Category>>
@@ -24,7 +22,5 @@ interface PostApi {
 //get posts by category
     @GET("/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>
-//get all posts
-    @GET("posts/detail/{postID}")
-    fun getPostDetail(@Path("postID") postID: Int): Call<PostDetail>
+
 }
