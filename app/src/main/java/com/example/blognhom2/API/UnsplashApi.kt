@@ -1,6 +1,5 @@
 package com.example.blognhom2.API
 
-import com.example.blognhom2.model.Post
 import com.example.blognhom2.model.SearchResult
 import retrofit2.Call
 import retrofit2.http.GET

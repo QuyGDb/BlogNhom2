@@ -113,9 +113,6 @@ class PostsCategoryFragment : Fragment() {
         adapter.setFilteredList(postSet.toMutableList())
     }
 
-    fun setData(category: String) {
-        this.category = category
-    }
 
     private fun loadMorePosts() {
         println("Loading more posts...")
