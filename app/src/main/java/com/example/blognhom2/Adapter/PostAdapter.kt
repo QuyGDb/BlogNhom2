@@ -49,6 +49,9 @@ class PostAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<PostAdap
         return genericList.size
     }
 
+
+
+    // do some thing
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.itemView.apply {
             holder.postLayout.startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim))
