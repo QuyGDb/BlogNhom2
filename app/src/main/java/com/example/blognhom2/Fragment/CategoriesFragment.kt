@@ -36,7 +36,7 @@ class CategoriesFragment : Fragment() {
     ): View? {
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
 
-            prepareData()
+        prepareData()
 
         val view = binding.root
         return view
