@@ -124,6 +124,7 @@ class WriteFragment : Fragment() {
                             val dayOfMonth = today.dayOfMonth
                             val formattedDate = "$year-${month}-${dayOfMonth}"
 
+                            //Post cần up lên
                             post = MyPost(title, imageUrl, content, category, formattedDate)
                         }
                 }
