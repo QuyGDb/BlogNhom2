@@ -13,6 +13,7 @@ import com.example.blognhom2.model.PostInfo
 class PostContentFragment : Fragment() {
 
     lateinit var post : PostInfo;
+    lateinit var bookmarkPost : List<PostInfo>
     private var _binding: FragmentPostContentBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -43,5 +44,8 @@ class PostContentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    fun addPostToBookmarks(){
+
     }
 }

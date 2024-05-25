@@ -65,7 +65,6 @@ class HomeFragment : Fragment() {
 
         private fun preparePostData() : List<PostInfo> {
             postList.clear()
-
             val retrofit = Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -87,9 +86,7 @@ class HomeFragment : Fragment() {
                         postList.addAll(it);
                     }
                     SetPostAdapter()
-
                 }
-
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)
                 }
