@@ -6,22 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.databinding.FragmentPostContentBinding
-import com.example.blognhom2.model.Category
-import com.example.blognhom2.model.Post
-import com.example.blognhom2.model.PostDetail
 import com.example.blognhom2.model.PostInfo
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class PostContentFragment : Fragment() {
 
-    lateinit var post : PostDetail;
+    lateinit var post : PostInfo;
     private var _binding: FragmentPostContentBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -35,7 +26,7 @@ class PostContentFragment : Fragment() {
         return view
     }
 
-    fun setData(post: PostDetail) {
+    fun setData(post: PostInfo) {
         this.post = post
     }
 
@@ -43,10 +34,10 @@ class PostContentFragment : Fragment() {
         binding.postTitle.text = "      "+ post.title
         binding.postContent.text =  "      "+ post.content
         binding.postUser.text = post.user
-        binding.postCategories.text = post.categories
-        binding.postTime.text = post.time.toString()
+        binding.postCategories.text = post.category
+        binding.postTime.text = post.time
         Glide.with(requireContext())
-            .load(post.postImg)
+            .load(post.img)
             .into(binding.postImage)
     }
     override fun onDestroyView() {
