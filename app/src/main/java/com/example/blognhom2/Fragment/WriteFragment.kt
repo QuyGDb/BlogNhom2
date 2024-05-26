@@ -15,10 +15,10 @@ import com.example.blognhom2.databinding.FragmentWriteBinding
 import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.MyPost
 import com.example.blognhom2.model.PostInfo
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
-//import com.google.firebase.storage.FirebaseStorage
-//import com.google.firebase.storage.StorageReference
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,15 +44,15 @@ class WriteFragment : Fragment() {
 
     var imgUrl: String? = ""
 
-//    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
+    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
 
     private var categoriesList = mutableListOf<Category>()
 
     private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
 
-//    private lateinit var firebaseRef: DatabaseReference
-//    private lateinit var storageRef: StorageReference
+    private lateinit var firebaseRef: DatabaseReference
+    private lateinit var storageRef: StorageReference
 
     private var uri: Uri? = null
 
@@ -71,27 +71,27 @@ class WriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentWriteBinding.inflate(inflater, container, false)
-//        firebaseRef = FirebaseDatabase.getInstance().getReference("contacts")
-//        storageRef = FirebaseStorage.getInstance().getReference("Images")
+        firebaseRef = FirebaseDatabase.getInstance().getReference("contacts")
+        storageRef = FirebaseStorage.getInstance().getReference("Images")
 
         prepareData()
 
-//        //Pick image action
-//        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
-//            binding.wImage.setImageURI(it)
-//            if (it != null) {
-//                uri = it
-//            }
-//        }
-//
-//        //Set dafaut image View
-//        Glide.with(this)
-//            .load(imageUrl)
-//            .into(binding.wImage)
-//
-//        binding.wPickImgBtn.setOnClickListener{
-//            pickImage.launch("image/*")
-//        }
+        //Pick image action
+        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
+            binding.wImage.setImageURI(it)
+            if (it != null) {
+                uri = it
+            }
+        }
+
+        //Set dafaut image View
+        Glide.with(this)
+            .load(imageUrl)
+            .into(binding.wImage)
+
+        binding.wPickImgBtn.setOnClickListener{
+            pickImage.launch("image/*")
+        }
 
         //Upload post Logic
         binding.wSubmitBtn.setOnClickListener {
@@ -108,27 +108,27 @@ class WriteFragment : Fragment() {
     }
 
     private fun saveData(title: String, content: String, category: String) {
-//        val id = firebaseRef.push().key!!
-//        var post : MyPost
-//        uri?.let {
-//            storageRef.child(id).putFile(it)
-//                .addOnSuccessListener {task ->
-//                    task.metadata!!.reference!!.downloadUrl
-//                        .addOnSuccessListener {url ->
-//                            Toast.makeText(requireContext(), "Image success", Toast.LENGTH_LONG).show()
-//                            imgUrl = url.toString()
-//                            val today = LocalDate.now()
-//
-//                            val year = today.year
-//                            val month = today.monthValue // Returns month as an enum (e.g., MAY)
-//                            val dayOfMonth = today.dayOfMonth
-//                            val formattedDate = "$year-${month}-${dayOfMonth}"
-//
-//                            //Post cần up lên
-//                            post = MyPost(title, imageUrl, content, category, formattedDate)
-//                        }
-//                }
-//        }
+        val id = firebaseRef.push().key!!
+        var post : MyPost
+        uri?.let {
+            storageRef.child(id).putFile(it)
+                .addOnSuccessListener {task ->
+                    task.metadata!!.reference!!.downloadUrl
+                        .addOnSuccessListener {url ->
+                            Toast.makeText(requireContext(), "Image success", Toast.LENGTH_LONG).show()
+                            imgUrl = url.toString()
+                            val today = LocalDate.now()
+
+                            val year = today.year
+                            val month = today.monthValue // Returns month as an enum (e.g., MAY)
+                            val dayOfMonth = today.dayOfMonth
+                            val formattedDate = "$year-${month}-${dayOfMonth}"
+
+                            //Post cần up lên
+                            post = MyPost(title, imageUrl, content, category, formattedDate)
+                        }
+                }
+        }
     }
 
     private fun prepareData(){

@@ -1,7 +1,6 @@
 package com.example.blognhom2.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +31,7 @@ import java.util.*
 
 class HomeFragment : Fragment() {
     private var isLoading = false
-    private var visibleThreshold = 2 // Number of items from the bottom of the list at which loading more is triggered
+    private var visibleThreshold = 5 // Number of items from the bottom of the list at which loading more is triggered
     private var offset = 0 // The offset for loading more posts
 
     private var _binding: FragmentHomeBinding? = null
@@ -96,7 +95,6 @@ class HomeFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         postList.addAll(it);
-                        adapter.notifyDataSetChanged()
                     }
                     SetPostAdapter()
                     loadAnimation()
@@ -122,7 +120,7 @@ class HomeFragment : Fragment() {
 
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                Log.d("HomeFragment","totalItemCount: $totalItemCount and lastVisibleItem: $lastVisibleItem and visibleThreshold: $visibleThreshold")
+
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     // End has been reached, load more items
                     loadMoreItems()
