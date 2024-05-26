@@ -68,20 +68,20 @@ class CategoriesAdapter(var categoriesList : List<Category>, var posts : Mutable
                 val adapter = PostAdapter(postInfos)
                 holder.childRecyclerView.adapter = adapter
                 holder.childRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL,false)
-//                holder.childRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                        super.onScrolled(recyclerView, dx, dy)
-//
-//                        val totalItemCount = (holder.childRecyclerView.layoutManager as LinearLayoutManager).itemCount
-//                        val lastVisibleItem = (holder.childRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-//
-//                        if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-//                            // End has been reached, load more items
-//                            loadMoreItems(category, holder.childRecyclerView.adapter as PostAdapter)
-//                            isLoading = true
-//                        }
-//                    }
-//                })
+                holder.childRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+
+                        val totalItemCount = (holder.childRecyclerView.layoutManager as LinearLayoutManager).itemCount
+                        val lastVisibleItem = (holder.childRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
+                        if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                            // End has been reached, load more items
+                            loadMoreItems(category, holder.childRecyclerView.adapter as PostAdapter)
+                            isLoading = true
+                        }
+                   }
+                })
             }
         }
 
