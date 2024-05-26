@@ -39,7 +39,6 @@ class PostContentFragment : Fragment() {
         // Inflate the layout for this fragment
         SetDataForPostContent()
 
-        checkPostInBookmark()
 
         BookmarkManager()
         val view = binding.root
@@ -72,13 +71,16 @@ class PostContentFragment : Fragment() {
         Glide.with(requireContext())
             .load(post.img)
             .into(binding.postImage)
+        checkPostInBookmark()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
+    fun SetStatusToggleButton(isBookmarkPost : Boolean){
+        binding.BookMarkBtn.isChecked = isBookmarkPost
+    }
 
     //    kt post co trong bookmark hay khong
     private fun checkPostInBookmark() {
@@ -115,17 +117,20 @@ class PostContentFragment : Fragment() {
                 println("ResponsePost")
                 println(response)
                 if (!response.isSuccessful) {
-                    println("Code: " + response.code())
+                    println("Code: test" + response.code())
                     return
                 }
 
                 val status = response.body()
                 println(status!!.status)
+                println("test")
                 println("Post ${post.id} is in bookmark: $isBookmarkPost")
+                SetStatusToggleButton(isBookmarkPost)
 
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
                 println(t.message)
+                println("loi")
             }
         })
     }

@@ -25,7 +25,7 @@ interface BlogOwnerApi {
     fun searchPosts(@Query("page") page: Int, @Query("l") letter: String): Call<List<PostInfo>>
     //get posts
     @GET("/blogOwner/posts")
-    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
+    fun getPostsByBookMark(@Query("page") page: Int): Call<List<PostInfo>>
     //get posts by category
     @GET("/blogOwner/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>

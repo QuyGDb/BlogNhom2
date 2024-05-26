@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
-    lateinit var bookmarkPost: List<PostInfo>
+    lateinit var bookmarkPosts: List<PostInfo>
     lateinit var adapter : PostAdapter
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -32,7 +32,7 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
-    bookmarkPost = getPostsInBookmarks()
+    bookmarkPosts = getPostsInBookmarks()
         SetPostAdapter()
         val view = binding.root
         return view
@@ -47,7 +47,7 @@ class BookmarkFragment : Fragment() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val api = retrofit.create(BlogOwnerApi::class.java)
-            val call = api.getPosts(0);
+            val call = api.getPostsInBookmarks(0);
 
             call.enqueue(object : Callback<List<PostInfo>> {
                 override fun onResponse(
@@ -77,7 +77,7 @@ class BookmarkFragment : Fragment() {
         }
     }
     private fun SetPostAdapter() {
-        adapter = PostAdapter(bookmarkPost)
+        adapter = PostAdapter(bookmarkPosts)
         binding.bookmarkRecycleView.adapter = adapter
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
