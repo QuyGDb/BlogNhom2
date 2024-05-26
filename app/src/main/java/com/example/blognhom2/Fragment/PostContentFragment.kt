@@ -1,6 +1,7 @@
 package com.example.blognhom2.Fragment
 
 import android.os.Bundle
+import android.os.Debug
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ import java.sql.DriverManager
 class PostContentFragment : Fragment() {
 
     lateinit var post: PostInfo;
-    lateinit var bookmarkPost: MutableList<PostInfo>
+
     private var isBookmarkPost: Boolean = false;
     private var _binding: FragmentPostContentBinding? = null
     private val binding get() = _binding!!
@@ -37,7 +38,10 @@ class PostContentFragment : Fragment() {
         _binding = FragmentPostContentBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         SetDataForPostContent()
-        bookmarkPost = getPostsInBookmarks() as MutableList<PostInfo>
+
+        checkPostInBookmark()
+
+        BookmarkManager()
         val view = binding.root
         return view
     }
@@ -45,23 +49,17 @@ class PostContentFragment : Fragment() {
     fun setData(post: PostInfo) {
         this.post = post
     }
-    fun checkStatusToggleButon(){
-        for (boomarkPost in bookmarkPost){
-            if(boomarkPost.id == post.id)
-                binding.BookMarkBtn.isChecked = true
-            else
-                binding.BookMarkBtn.isChecked = false
-        }
-    }
+
     fun BookmarkManager(){
         binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                //call remove bookmark
-                binding.BookMarkBtn.isChecked = false
+            if (isBookmarkPost) {
+                removePostFromBookmark()
+                isBookmarkPost = false
+
             }
             else {
-                // call add bookmark
-                binding.BookMarkBtn.isChecked = true
+                addPostToBookmark()
+                isBookmarkPost = true
             }
         }
     }
@@ -82,37 +80,6 @@ class PostContentFragment : Fragment() {
     }
 
 
-    private fun getPostsInBookmarks() : List<PostInfo> {
-        bookmarkPost.clear()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8081/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(PostApi::class.java)
-        val call = api.getPosts(0);
-
-        call.enqueue(object : Callback<List<PostInfo>> {
-            override fun onResponse(call: Call<List<PostInfo>>, response: Response<List<PostInfo>>) {
-                println("ResponsePost")
-                println(response)
-                if (!response.isSuccessful) {
-                    println("Code: " + response.code())
-                    return
-                }
-
-                val posts = response.body()
-                posts?.let {
-                    bookmarkPost.addAll(it);
-                }
-
-            }
-            override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
-                println(t.message)
-            }
-        })
-
-        return bookmarkPost
-    }
     //    kt post co trong bookmark hay khong
     private fun checkPostInBookmark() {
         val httpClient = OkHttpClient.Builder()
@@ -153,9 +120,7 @@ class PostContentFragment : Fragment() {
                 }
 
                 val status = response.body()
-                if (status != null) {
-                    isBookmarkPost = status.status
-                };
+                println(status!!.status)
                 println("Post ${post.id} is in bookmark: $isBookmarkPost")
 
             }
@@ -204,7 +169,7 @@ class PostContentFragment : Fragment() {
 
                 val status = response.body()
 
-                println(status)
+
 
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
@@ -253,7 +218,7 @@ class PostContentFragment : Fragment() {
 
                 val status = response.body()
 
-                println(status)
+                println(status?.status)
 
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
