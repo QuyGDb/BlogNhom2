@@ -1,8 +1,7 @@
 package com.example.blognhom2.Fragment
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Debug
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,10 @@ import android.view.ViewGroup
 import android.webkit.CookieManager
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
-import com.example.blognhom2.API.AuthenticationAPI
 import com.example.blognhom2.API.BlogOwnerApi
-import com.example.blognhom2.LoginActivity
+import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.databinding.FragmentPostContentBinding
+import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.PostInfo
 import com.example.blognhom2.model.ResponseFormat
 import okhttp3.OkHttpClient
@@ -28,9 +27,11 @@ import java.sql.DriverManager
 
 class PostContentFragment : Fragment() {
 
+
     lateinit var post : PostInfo;
 //    lateinit var bookmarkPost : List<PostInfo>
     private var isBookmarkPost = MutableLiveData<Boolean>();
+
     private var _binding: FragmentPostContentBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -40,13 +41,52 @@ class PostContentFragment : Fragment() {
         _binding = FragmentPostContentBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         SetDataForPostContent()
+
         checkPostInBookmark()
         BookmarkManager();
+
         val view = binding.root
         return view
     }
 
-//    kt post co trong bookmark hay khong
+    fun setData(post: PostInfo) {
+        this.post = post
+    }
+
+    fun BookmarkManager(){
+        binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isBookmarkPost) {
+                removePostFromBookmark()
+                isBookmarkPost = false
+
+            }
+            else {
+                addPostToBookmark()
+                isBookmarkPost = true
+            }
+        }
+    }
+    fun SetDataForPostContent(){
+        binding.postTitle.text = "      "+ post.title
+        binding.postContent.text =  "      "+ post.content
+        binding.postUser.text = post.user
+        binding.postCategories.text = post.category
+        binding.postTime.text = post.time
+        Glide.with(requireContext())
+            .load(post.img)
+            .into(binding.postImage)
+        checkPostInBookmark()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+    fun SetStatusToggleButton(isBookmarkPost : Boolean){
+        binding.BookMarkBtn.isChecked = isBookmarkPost
+    }
+
+    //    kt post co trong bookmark hay khong
     private fun checkPostInBookmark() {
         var isInBookmark = false;
         val httpClient = OkHttpClient.Builder()
@@ -79,6 +119,7 @@ class PostContentFragment : Fragment() {
 
         call.enqueue(object : Callback<ResponseFormat> {
             override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
+
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
@@ -86,13 +127,15 @@ class PostContentFragment : Fragment() {
                     }
                 }
 
+
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
                 println(t.message)
+                println("loi")
             }
         })
     }
-//    add post to bookmark
+    //    add post to bookmark
     private fun addPostToBookmark() {
         val httpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -132,7 +175,7 @@ class PostContentFragment : Fragment() {
 
                 val status = response.body()
 
-                println(status)
+
 
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
@@ -180,7 +223,9 @@ class PostContentFragment : Fragment() {
                 }
 
                 val status = response.body()
+
                 println(status)
+
 
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
@@ -188,6 +233,7 @@ class PostContentFragment : Fragment() {
             }
         })
     }
+
 
     fun setData(post: PostInfo) {
         this.post = post
@@ -225,4 +271,6 @@ class PostContentFragment : Fragment() {
     fun addPostToBookmarks(){
 
     }
+
+
 }

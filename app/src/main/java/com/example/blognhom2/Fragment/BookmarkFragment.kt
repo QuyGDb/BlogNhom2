@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import android.webkit.CookieManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blognhom2.API.BlogOwnerApi
@@ -14,12 +15,15 @@ import com.example.blognhom2.databinding.FragmentBookmarkBinding
 import com.example.blognhom2.model.PostInfo
 import okhttp3.OkHttpClient
 import okhttp3.Request
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 import java.sql.DriverManager
+
 
 
 class BookmarkFragment : Fragment() {
@@ -34,7 +38,9 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+
         bookmarkPosts = getPostsInBookmarks()
+
         SetPostAdapter()
         val view = binding.root
         return view
@@ -44,6 +50,7 @@ class BookmarkFragment : Fragment() {
         var bookmarkPosts = mutableListOf<PostInfo>()
         private fun getPostsInBookmarks(): List<PostInfo> {
             bookmarkPosts.clear()
+
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val original: Request = chain.request()
@@ -67,6 +74,7 @@ class BookmarkFragment : Fragment() {
                 .baseUrl("http://10.0.2.2:8081/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
+
                 .build()
             val api = retrofit.create(BlogOwnerApi::class.java)
             val call = api.getPostsInBookmarks(0);
@@ -87,7 +95,9 @@ class BookmarkFragment : Fragment() {
                     posts?.let {
                         bookmarkPosts.addAll(it);
                     }
+
                     println(posts)
+
 
                 }
 

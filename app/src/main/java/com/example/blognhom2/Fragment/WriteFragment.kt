@@ -60,15 +60,17 @@ class WriteFragment : Fragment() {
 
     var imgUrl: String? = ""
 
+
 //    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
     val imageUrl = ""
+
     private var categoriesList = mutableListOf<Category>()
 
     private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
 
-//    private lateinit var firebaseRef: DatabaseReference
-//    private lateinit var storageRef: StorageReference
+    private lateinit var firebaseRef: DatabaseReference
+    private lateinit var storageRef: StorageReference
 
     private var uri: Uri? = null
     private val REQUEST_CODE = 100;
@@ -87,12 +89,13 @@ class WriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentWriteBinding.inflate(inflater, container, false)
-//        firebaseRef = FirebaseDatabase.getInstance().getReference("contacts")
-//        storageRef = FirebaseStorage.getInstance().getReference("Images")
+        firebaseRef = FirebaseDatabase.getInstance().getReference("contacts")
+        storageRef = FirebaseStorage.getInstance().getReference("Images")
 
         prepareData()
 
         //Pick image action
+
         val pickImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
@@ -138,16 +141,19 @@ class WriteFragment : Fragment() {
                         println("Error: ${t.message}")
                     }
                 })
+
             }
         }
 
         //Set dafaut image View
+
 //        Glide.with(this)
 //            .load(imageUrl)
 //            .into(binding.wImage)
 
         binding.wPickImgBtn.setOnClickListener{
             println("upload iMage")
+
             pickImage.launch("image/*")
         }
 
@@ -178,6 +184,7 @@ class WriteFragment : Fragment() {
         }
     }
     private fun saveData(title: String, content: String, category: String) {
+
         val postInfo: MyPost = MyPost(null, imgUrl, title, category, content);
 
         println(postInfo)
@@ -226,6 +233,7 @@ class WriteFragment : Fragment() {
                 println(t.message)
             }
         })
+
     }
 
     private fun prepareData(){

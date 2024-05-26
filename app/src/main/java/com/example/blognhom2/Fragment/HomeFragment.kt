@@ -1,20 +1,26 @@
 package com.example.blognhom2.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostAdapter
+import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentHomeBinding
 import com.example.blognhom2.model.PostInfo
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +31,7 @@ import java.util.*
 
 class HomeFragment : Fragment() {
     private var isLoading = false
-    private var visibleThreshold = 2 // Number of items from the bottom of the list at which loading more is triggered
+    private var visibleThreshold = 5 // Number of items from the bottom of the list at which loading more is triggered
     private var offset = 0 // The offset for loading more posts
 
     private var _binding: FragmentHomeBinding? = null
@@ -44,10 +50,14 @@ class HomeFragment : Fragment() {
         initImageView()
         SetSearchView()
         preparePostData()
-        SetPostAdapter();
         // Inflate the layout for this fragment
         val view = binding.root
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
     fun initImageView() {
         val imageList = ArrayList<SlideModel>() // Create image list
@@ -85,10 +95,9 @@ class HomeFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         postList.addAll(it);
-                        adapter.notifyDataSetChanged()
                     }
-//                    SetPostAdapter()
-
+                    SetPostAdapter()
+                    loadAnimation()
                 }
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)
@@ -103,7 +112,7 @@ class HomeFragment : Fragment() {
         binding.PostRecyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         binding.PostRecyclerView.layoutManager = layoutManager
-
+        binding.PostRecyclerView.itemAnimator = SlideInDownAnimator()
         // Add the onScrollListener to your RecyclerView
         binding.PostRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -111,7 +120,7 @@ class HomeFragment : Fragment() {
 
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                Log.d("HomeFragment","totalItemCount: $totalItemCount and lastVisibleItem: $lastVisibleItem and visibleThreshold: $visibleThreshold")
+
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     // End has been reached, load more items
                     loadMoreItems()
@@ -140,7 +149,8 @@ class HomeFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         postList.addAll(it)
-                        adapter.notifyDataSetChanged()
+                        //adapter.notifyDataSetChanged()
+                        scheduleAnimation()
                     }
                 }
                 isLoading = false
@@ -215,8 +225,13 @@ class HomeFragment : Fragment() {
             }
         })
     }
+    fun loadAnimation(){
 
-
+        binding.PostRecyclerView.scheduleLayoutAnimation()
+    }
+    private fun scheduleAnimation() {
+        binding.PostRecyclerView.scheduleLayoutAnimation()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
