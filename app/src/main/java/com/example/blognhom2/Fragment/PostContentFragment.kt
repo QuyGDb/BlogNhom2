@@ -30,7 +30,26 @@ class PostContentFragment : Fragment() {
     fun setData(post: PostInfo) {
         this.post = post
     }
-
+    fun checkStatusToggleButon(){
+        for (boomarkPost in bookmarkPost){
+            if(boomarkPost.id == post.id)
+                binding.BookMarkBtn.isChecked = true
+            else
+                binding.BookMarkBtn.isChecked = false
+        }
+    }
+    fun BookmarkManager(){
+        binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                //call remove bookmark
+                binding.BookMarkBtn.isChecked = false
+            }
+            else {
+                // call add bookmark
+                binding.BookMarkBtn.isChecked = true
+            }
+        }
+    }
     fun SetDataForPostContent(){
         binding.postTitle.text = "      "+ post.title
         binding.postContent.text =  "      "+ post.content
