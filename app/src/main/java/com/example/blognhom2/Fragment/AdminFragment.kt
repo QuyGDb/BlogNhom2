@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.example.blognhom2.R
 import com.example.blognhom2.Utils.LogOutFunc
-import com.example.blognhom2.databinding.FragmentProfileBinding
+import com.example.blognhom2.databinding.FragmentAdminBinding
 
 
-class ProfileFragment : Fragment() {
+class AdminFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentAdminBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,9 +21,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
-        setUserName()
+        _binding = FragmentAdminBinding.inflate(inflater, container, false)
 
         val view = binding.root
 
@@ -37,7 +34,14 @@ class ProfileFragment : Fragment() {
 
         view.findViewById<Button>(R.id.allPosts_btn).setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, OwnerPostFragment())
+                .replace(R.id.frame_layout, AllPostsFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        view.findViewById<Button>(R.id.goToComfirmFragment_btn).setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, ConfirmPostFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -46,12 +50,4 @@ class ProfileFragment : Fragment() {
             LogOutFunc.logout(requireContext())
         }
     }
-
-    fun setUserName(){
-        //Phúc viết api lấy username xong gán xuống dưới
-        binding.username.text = ""
-    }
-
-
-
 }

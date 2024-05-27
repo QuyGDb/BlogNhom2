@@ -37,7 +37,11 @@ class MainActivity : AppCompatActivity() {
                 1 -> replaceFragment(CategoriesFragment())
                 2 -> replaceFragment(WriteFragment())
                 3 -> replaceFragment(BookmarkFragment())
-                4 -> replaceFragment(ProfileFragment())
+                4 -> if(checkIfAdmin()) {
+                    replaceFragment(AdminFragment())
+                } else {
+                    replaceFragment(ProfileFragment())
+                }
 
                 else -> {
 
@@ -45,5 +49,11 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun checkIfAdmin(): Boolean {
+        // Implement logic to determine if the user is an admin
+        // This can be based on shared preferences, a database query, etc.
+        return false // Placeholder: replace with actual logic
     }
 }
