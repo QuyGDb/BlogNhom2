@@ -191,6 +191,8 @@ class EditPostFragment : Fragment() {
             }
         })
     }
+
+    //Update Post
     private fun updateData(postId: Int, title: String, content: String, category: String) {
         updateUserPost(postId, title, content, category)
     }
