@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blognhom2.Adapter.PostOwnerAdapter
 import com.example.blognhom2.databinding.FragmentAllPostsBinding
 import com.example.blognhom2.model.PostInfo
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.sql.DriverManager
 
 class AllPostsFragment : Fragment() {
     private var isLoading = false
@@ -46,9 +50,27 @@ class AllPostsFragment : Fragment() {
     private fun preparePostData() : List<PostInfo> {
         postList.clear()
 
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val orginal : Request = chain.request()
+                val requestBuilder = orginal.newBuilder()
+
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+
+                DriverManager.println("Cookies $cookies")
+                if(cookies != null) {
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
             .build()
         val api = retrofit.create(AdminApi::class.java)
 
@@ -109,9 +131,27 @@ class AllPostsFragment : Fragment() {
         offset += 1
 
         // Call your API here
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val orginal : Request = chain.request()
+                val requestBuilder = orginal.newBuilder()
+
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+
+                DriverManager.println("Cookies $cookies")
+                if(cookies != null) {
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
             .build()
         val api = retrofit.create(AdminApi::class.java)
 
