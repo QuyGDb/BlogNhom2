@@ -29,6 +29,7 @@ class PostContentFragment : Fragment() {
 
 
     lateinit var post : PostInfo;
+
     private var isBookmarkPost = MutableLiveData<Boolean>();
 
     private var _binding: FragmentPostContentBinding? = null
@@ -95,10 +96,12 @@ class PostContentFragment : Fragment() {
 
         call.enqueue(object : Callback<ResponseFormat> {
             override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
+
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
                         isBookmarkPost.value = body.status
+
                         binding.BookMarkBtn.isChecked = isBookmarkPost.value!!
                     }
                 }
@@ -212,6 +215,7 @@ class PostContentFragment : Fragment() {
     fun setData(post: PostInfo) {
         this.post = post
     }
+
 
 
 

@@ -24,6 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.sql.DriverManager
 
 
+import java.sql.DriverManager
+
+
 
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
@@ -40,12 +43,17 @@ class BookmarkFragment : Fragment() {
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
 
-        getPostsInBookmarks()
+
+        bookmarkPosts = getPostsInBookmarks()
+
+        SetPostAdapter()
+
         val view = binding.root
         return view
     }
         private fun getPostsInBookmarks(): List<PostInfo> {
             bookmarkPosts.clear()
+
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val original: Request = chain.request()
@@ -94,6 +102,9 @@ class BookmarkFragment : Fragment() {
                         SetPostAdapter()
                     }
                     println(posts)
+
+                    println(posts)
+
 
                 }
 
