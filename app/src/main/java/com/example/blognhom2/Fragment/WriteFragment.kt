@@ -147,7 +147,7 @@ class WriteFragment : Fragment() {
         binding.wSubmitBtn.setOnClickListener {
             val title = binding.wTitle.text.toString()
             val content = binding.wContent.text.toString()
-            val category = categoriesList[0].category
+            val category = categoriesList[categoryId].category
             if (title.isNotEmpty() && content.isNotEmpty() && isChangeCategory) saveData(title, content, category)
             else Toast.makeText(requireContext(), "Please Fill ALl Data", Toast.LENGTH_LONG).show()
         }
