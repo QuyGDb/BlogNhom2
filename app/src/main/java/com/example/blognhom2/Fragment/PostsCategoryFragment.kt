@@ -150,8 +150,8 @@ class PostsCategoryFragment : Fragment() {
     }
 
     private fun SetSearchView(){
-        binding.seachView.clearFocus()
-        binding.seachView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        binding.searchView.clearFocus()
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
