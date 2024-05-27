@@ -41,10 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
-                android:fontFamily="@font/alata"
                 android:text="Posts"
                 android:textColor="#220F25"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/username"/>
 
