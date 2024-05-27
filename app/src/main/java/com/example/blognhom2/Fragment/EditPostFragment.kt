@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -15,9 +16,12 @@ import com.example.blognhom2.databinding.FragmentEditPostBinding
 import com.example.blognhom2.databinding.FragmentWriteBinding
 import com.example.blognhom2.model.PostInfo
 import com.bumptech.glide.Glide
+import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.FileFormat
+import com.example.blognhom2.model.MyPost
+import com.example.blognhom2.model.ResponseFormat
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -31,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.sql.DriverManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -187,7 +192,50 @@ class EditPostFragment : Fragment() {
         })
     }
     private fun updateData(postId: Int, title: String, content: String, category: String) {
-        //Update Post với các thuộc tính: postId, title, content, catogory , imgUrl
+        updateUserPost(postId, title, content, category)
+    }
+
+    private fun updateUserPost(id: Int, title: String, content: String, category: String) {
+        val postInfo: MyPost = MyPost(id, imgUrl, title, category, content);
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original: Request = chain.request()
+                val requestBuilder = original.newBuilder()
+                // Get the cookies for this URL
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+                DriverManager.println("Cookies $cookies")
+                if (cookies != null) {
+                    // Add the cookies to the request header
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+        val api = retrofit.create(BlogOwnerApi::class.java)
+        val call = api.updatePost(postInfo)
+        call.enqueue(object : Callback<ResponseFormat> {
+            override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
+                println("ResponsePost")
+                println(response)
+                if (!response.isSuccessful) {
+                    println("Code: " + response.code())
+                    return
+                }
+
+                val status = response.body()
+
+                println(status)
+            }
+            override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
+                println(t.message)
+            }
+        })
     }
 
     private fun createTempFile(uri: Uri): File {
