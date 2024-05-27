@@ -23,7 +23,6 @@ class PostAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<PostAdap
         var postTime: TextView = itemView.findViewById(R.id.articleDateTime)
         var postCategory: TextView = itemView.findViewById(R.id.articleCategories)
         val postContent : TextView = itemView.findViewById(R.id.articleDescription)
-        val postLayout : ConstraintLayout = itemView.findViewById(R.id.postLayout)
     }
     public fun setFilteredList(filteredList: List<PostInfo>){
         this.genericList = filteredList as MutableList<PostInfo>

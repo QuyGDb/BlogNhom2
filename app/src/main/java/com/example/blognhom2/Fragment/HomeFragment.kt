@@ -49,7 +49,9 @@ class HomeFragment : Fragment() {
 
         initImageView()
         SetSearchView()
+        SetPostAdapter()
         preparePostData()
+
         // Inflate the layout for this fragment
         val view = binding.root
         return view
@@ -96,8 +98,10 @@ class HomeFragment : Fragment() {
                     posts?.let {
                         postList.addAll(it);
                     }
-                    SetPostAdapter()
                     loadAnimation()
+                    SetPostAdapter()
+                    //updateAdapter()
+
 
                 }
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
@@ -107,7 +111,9 @@ class HomeFragment : Fragment() {
 
             return postList
         }
-
+    private fun updateAdapter() {
+        adapter.setFilteredList(postList)
+    }
     private fun SetPostAdapter(){
         adapter = PostAdapter(postList)
         binding.PostRecyclerView.adapter = adapter
@@ -150,9 +156,9 @@ class HomeFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         postList.addAll(it)
-                        //adapter.notifyDataSetChanged()
-                        scheduleAnimation()
+                        adapter.notifyDataSetChanged()
                     }
+
                 }
                 isLoading = false
             }
@@ -163,6 +169,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
 
     private fun SetSearchView(){
         binding.seachView.clearFocus()
@@ -227,12 +234,16 @@ class HomeFragment : Fragment() {
         })
     }
     fun loadAnimation(){
+        binding.PostRecyclerView.itemAnimator = SlideInDownAnimator().apply {
+            addDuration = 500 // Duration for add animations
+            removeDuration = 500 // Duration for remove animations
+            moveDuration = 500 // Duration for move animations
+            changeDuration = 500 // Duration for change animations
+        }
 
         binding.PostRecyclerView.scheduleLayoutAnimation()
     }
-    private fun scheduleAnimation() {
-        binding.PostRecyclerView.scheduleLayoutAnimation()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

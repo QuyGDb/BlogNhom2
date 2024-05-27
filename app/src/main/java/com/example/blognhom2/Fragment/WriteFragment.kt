@@ -43,59 +43,28 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.sql.DriverManager
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [WriteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WriteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     var imgUrl: String? = ""
-
-
-//    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
+    //    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
     val imageUrl = ""
-
     private var categoriesList = mutableListOf<Category>()
-
     private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var firebaseRef: DatabaseReference
-    private lateinit var storageRef: StorageReference
-
     private var uri: Uri? = null
     private val REQUEST_CODE = 100;
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentWriteBinding.inflate(inflater, container, false)
-        firebaseRef = FirebaseDatabase.getInstance().getReference("contacts")
-        storageRef = FirebaseStorage.getInstance().getReference("Images")
-
         prepareData()
 
         //Pick image action
-
         val pickImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
@@ -141,19 +110,16 @@ class WriteFragment : Fragment() {
                         println("Error: ${t.message}")
                     }
                 })
-
             }
         }
 
         //Set dafaut image View
-
 //        Glide.with(this)
 //            .load(imageUrl)
 //            .into(binding.wImage)
 
         binding.wPickImgBtn.setOnClickListener{
             println("upload iMage")
-
             pickImage.launch("image/*")
         }
 
@@ -184,7 +150,6 @@ class WriteFragment : Fragment() {
         }
     }
     private fun saveData(title: String, content: String, category: String) {
-
         val postInfo: MyPost = MyPost(null, imgUrl, title, category, content);
 
         println(postInfo)
@@ -233,7 +198,6 @@ class WriteFragment : Fragment() {
                 println(t.message)
             }
         })
-
     }
 
     private fun prepareData(){
@@ -280,23 +244,4 @@ class WriteFragment : Fragment() {
         binding.wCategoies.adapter = adapter
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WriteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WriteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
