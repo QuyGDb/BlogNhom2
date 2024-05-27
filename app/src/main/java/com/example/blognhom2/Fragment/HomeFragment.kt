@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
         initImageView()
         SetSearchView()
         preparePostData()
-        SetPostAdapter();
         // Inflate the layout for this fragment
         val view = binding.root
         return view
@@ -85,10 +84,9 @@ class HomeFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         postList.addAll(it);
+                        SetPostAdapter()
                         adapter.notifyDataSetChanged()
                     }
-//                    SetPostAdapter()
-
                 }
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)

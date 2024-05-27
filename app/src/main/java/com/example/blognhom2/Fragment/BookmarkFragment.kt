@@ -35,12 +35,9 @@ class BookmarkFragment : Fragment() {
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         getPostsInBookmarks()
-        //SetPostAdapter()
         val view = binding.root
         return view
     }
-
-
         private fun getPostsInBookmarks(): List<PostInfo> {
             bookmarkPosts.clear()
             val httpClient = OkHttpClient.Builder()
@@ -90,12 +87,10 @@ class BookmarkFragment : Fragment() {
                     println(posts)
 
                 }
-
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)
                 }
             })
-
             return bookmarkPosts
         }
 
