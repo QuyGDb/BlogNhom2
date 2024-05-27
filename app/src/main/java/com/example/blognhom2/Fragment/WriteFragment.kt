@@ -15,7 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.MimeTypeMap
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.documentfile.provider.DocumentFile
@@ -48,6 +50,8 @@ class WriteFragment : Fragment() {
 
 
     var imgUrl: String? = ""
+    private var categoryId: Int = 0
+    private var isChangeCategory: Boolean = false
     //    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
     val imageUrl = ""
     private var categoriesList = mutableListOf<Category>()
@@ -63,6 +67,22 @@ class WriteFragment : Fragment() {
     ): View? {
         _binding = FragmentWriteBinding.inflate(inflater, container, false)
         prepareData()
+        binding.wCategoies.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //Toast.makeText(requireContext(), position, Toast.LENGTH_LONG).show()
+                categoryId = position
+                isChangeCategory = true
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                isChangeCategory = false;
+            }
+        });
 
         //Pick image action
         val pickImage = registerForActivityResult(
@@ -128,7 +148,8 @@ class WriteFragment : Fragment() {
             val title = binding.wTitle.text.toString()
             val content = binding.wContent.text.toString()
             val category = categoriesList[0].category
-            if (title.isNotEmpty() && content.isNotEmpty()) saveData(title, content, category)
+            if (title.isNotEmpty() && content.isNotEmpty() && isChangeCategory) saveData(title, content, category)
+            else Toast.makeText(requireContext(), "Please Fill ALl Data", Toast.LENGTH_LONG).show()
         }
 
 
