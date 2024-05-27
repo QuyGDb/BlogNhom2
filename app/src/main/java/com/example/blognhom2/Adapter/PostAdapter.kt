@@ -23,7 +23,6 @@ class PostAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<PostAdap
         var postTime: TextView = itemView.findViewById(R.id.articleDateTime)
         var postCategory: TextView = itemView.findViewById(R.id.articleCategories)
         val postContent : TextView = itemView.findViewById(R.id.articleDescription)
-        val postLayout : ConstraintLayout = itemView.findViewById(R.id.postLayout)
     }
     public fun setFilteredList(filteredList: List<PostInfo>){
         this.genericList = filteredList as MutableList<PostInfo>
@@ -47,12 +46,6 @@ class PostAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<PostAdap
     // do some thing
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.itemView.apply {
-            holder.postLayout.startAnimation(
-                AnimationUtils.loadAnimation(
-                    holder.itemView.context,
-                    R.anim.anim
-                )
-            )
             holder.postTitle.text = genericList[position].title
             holder.postTime.text = genericList[position].time
             holder.postCategory.text = genericList[position].category
