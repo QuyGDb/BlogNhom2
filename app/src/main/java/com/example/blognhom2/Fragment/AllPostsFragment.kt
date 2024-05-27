@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostOwnerAdapter
 import com.example.blognhom2.databinding.FragmentAllPostsBinding
-import com.example.blognhom2.databinding.FragmentOwnerPostBinding
 import com.example.blognhom2.model.PostInfo
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,9 +50,8 @@ class AllPostsFragment : Fragment() {
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(PostApi::class.java)
+        val api = retrofit.create(AdminApi::class.java)
 
-        //Phúc: viết api Get all users's posts
         val call = api.getPosts(0)
 
         call.enqueue(object : Callback<List<PostInfo>> {
@@ -116,9 +113,8 @@ class AllPostsFragment : Fragment() {
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(PostApi::class.java)
+        val api = retrofit.create(AdminApi::class.java)
 
-        //Phúc: viết api Get all users's posts
         val call = api.getPosts(offset)
 
         call.enqueue(object : Callback<List<PostInfo>> {

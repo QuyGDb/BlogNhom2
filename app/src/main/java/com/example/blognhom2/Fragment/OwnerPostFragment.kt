@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostOwnerAdapter
 import com.example.blognhom2.databinding.FragmentOwnerPostBinding
@@ -51,9 +52,8 @@ class OwnerPostFragment : Fragment() {
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(PostApi::class.java)
+        val api = retrofit.create(BlogOwnerApi::class.java)
 
-        //Phúc: viết api get post của user
         val call = api.getPosts(0)
 
         call.enqueue(object : Callback<List<PostInfo>> {
@@ -115,9 +115,9 @@ class OwnerPostFragment : Fragment() {
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(PostApi::class.java)
 
-        //Phúc: viết api get post của user
+            val api = retrofit.create(BlogOwnerApi::class.java)
+
         val call = api.getPosts(offset)
 
         call.enqueue(object : Callback<List<PostInfo>> {
