@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import android.webkit.CookieManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blognhom2.API.BlogOwnerApi
@@ -14,6 +15,7 @@ import com.example.blognhom2.databinding.FragmentBookmarkBinding
 import com.example.blognhom2.model.PostInfo
 import okhttp3.OkHttpClient
 import okhttp3.Request
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,9 +24,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.sql.DriverManager
 
 
+
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
+
     var bookmarkPosts = mutableListOf<PostInfo>()
+
     lateinit var adapter : PostAdapter
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -34,6 +39,7 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+
         getPostsInBookmarks()
         val view = binding.root
         return view
@@ -63,6 +69,8 @@ class BookmarkFragment : Fragment() {
                 .baseUrl("http://10.0.2.2:8081/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
+
+
                 .build()
             val api = retrofit.create(BlogOwnerApi::class.java)
             val call = api.getPostsInBookmarks(0);
@@ -82,17 +90,21 @@ class BookmarkFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         bookmarkPosts.addAll(it);
+
                         SetPostAdapter()
                     }
                     println(posts)
 
                 }
+
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)
                 }
             })
+
             return bookmarkPosts
         }
+
 
     private fun SetPostAdapter() {
         adapter = PostAdapter(bookmarkPosts)

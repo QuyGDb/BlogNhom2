@@ -5,10 +5,10 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface BlogOwnerApi {
-//    user
+    //    user
     @GET("/blogOwner/user")
     fun getUser(): Call<UserAuthentication>
-//    bookmarks
+    //    bookmarks
     @GET("/blogOwner/bookmarks/isInBookmark")
     fun isInBookmark(@Query("postID") postID: Int): Call<ResponseFormat>
     @GET("/blogOwner/bookmarks/posts")
@@ -25,12 +25,12 @@ interface BlogOwnerApi {
     fun searchPosts(@Query("page") page: Int, @Query("l") letter: String): Call<List<PostInfo>>
     //get posts
     @GET("/blogOwner/posts")
-    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
+    fun getPostsByBookMark(@Query("page") page: Int): Call<List<PostInfo>>
     //get posts by category
     @GET("/blogOwner/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>
 
-//    create post
+    //    create post
     @PUT("/blogOwner/posts")
     fun createPost(@Body post: MyPost): Call<ResponseFormat>
 

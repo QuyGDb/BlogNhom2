@@ -80,7 +80,9 @@ class CategoriesAdapter(var categoriesList : List<Category>, var posts : Mutable
                             loadMoreItems(category, holder.childRecyclerView.adapter as PostAdapter)
                             isLoading = true
                         }
+
                     }
+
                 })
             }
         }
