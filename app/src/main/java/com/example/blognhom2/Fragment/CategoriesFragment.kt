@@ -36,13 +36,13 @@ class CategoriesFragment : Fragment() {
     ): View? {
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
 
-        prepareData()
+        getPostByCategory()
 
         val view = binding.root
         return view
     }
 
-    private fun prepareData(){
+    private fun getPostByCategory(){
         categoriesList.clear()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
@@ -65,7 +65,6 @@ class CategoriesFragment : Fragment() {
                     categoriesList.addAll(it)
                 }
                 SetCategoriesAdapter()
-
             }
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
@@ -88,7 +87,6 @@ class CategoriesFragment : Fragment() {
                     .load(photoUrl)
                     .into(imageView)
             }
-
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
                 // Xử lý lỗi
             }

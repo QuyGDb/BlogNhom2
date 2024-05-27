@@ -29,7 +29,7 @@ class PostContentFragment : Fragment() {
 
 
     lateinit var post : PostInfo;
-//    lateinit var bookmarkPost : List<PostInfo>
+
     private var isBookmarkPost = MutableLiveData<Boolean>();
 
     private var _binding: FragmentPostContentBinding? = null
@@ -48,45 +48,22 @@ class PostContentFragment : Fragment() {
         val view = binding.root
         return view
     }
-
-    fun setData(post: PostInfo) {
-        this.post = post
-    }
-
     fun BookmarkManager(){
-        binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isBookmarkPost) {
+        binding.BookMarkBtn.setOnClickListener {
+            if (isBookmarkPost.value == true) {
+                println("In bookmark")
                 removePostFromBookmark()
-                isBookmarkPost = false
-
-            }
-            else {
+                isBookmarkPost.value = false
+            } else {
+                println("Not in bookmark")
                 addPostToBookmark()
-                isBookmarkPost = true
+                isBookmarkPost.value = true
             }
         }
-    }
-    fun SetDataForPostContent(){
-        binding.postTitle.text = "      "+ post.title
-        binding.postContent.text =  "      "+ post.content
-        binding.postUser.text = post.user
-        binding.postCategories.text = post.category
-        binding.postTime.text = post.time
-        Glide.with(requireContext())
-            .load(post.img)
-            .into(binding.postImage)
-        checkPostInBookmark()
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
-    fun SetStatusToggleButton(isBookmarkPost : Boolean){
-        binding.BookMarkBtn.isChecked = isBookmarkPost
-    }
+//    kt post co trong bookmark hay khong
 
-    //    kt post co trong bookmark hay khong
     private fun checkPostInBookmark() {
         var isInBookmark = false;
         val httpClient = OkHttpClient.Builder()
@@ -124,10 +101,10 @@ class PostContentFragment : Fragment() {
                     val body = response.body()
                     if (body != null) {
                         isBookmarkPost.value = body.status
+
+                        binding.BookMarkBtn.isChecked = isBookmarkPost.value!!
                     }
                 }
-
-
             }
             override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
                 println(t.message)
@@ -239,20 +216,8 @@ class PostContentFragment : Fragment() {
         this.post = post
     }
 
-    fun BookmarkManager(){
-        binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isBookmarkPost.value == true) {
-                println("In bookmark")
-                removePostFromBookmark()
-                isBookmarkPost.value = false
-            }
-            else {
-                println("Not in bookmark")
-                addPostToBookmark()
-                isBookmarkPost.value = true
-            }
-        }
-    }
+
+
 
     fun SetDataForPostContent(){
         binding.postTitle.text = "      "+ post.title
@@ -268,9 +233,5 @@ class PostContentFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    fun addPostToBookmarks(){
-
-    }
-
 
 }
