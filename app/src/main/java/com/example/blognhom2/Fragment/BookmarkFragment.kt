@@ -24,7 +24,7 @@ import java.sql.DriverManager
 
 class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
-    lateinit var bookmarkPosts: List<PostInfo>
+    var bookmarkPosts = mutableListOf<PostInfo>()
     lateinit var adapter : PostAdapter
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -34,14 +34,13 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
-        bookmarkPosts = getPostsInBookmarks()
-        SetPostAdapter()
+        getPostsInBookmarks()
+        //SetPostAdapter()
         val view = binding.root
         return view
     }
-    companion object {
 
-        var bookmarkPosts = mutableListOf<PostInfo>()
+
         private fun getPostsInBookmarks(): List<PostInfo> {
             bookmarkPosts.clear()
             val httpClient = OkHttpClient.Builder()
@@ -86,6 +85,7 @@ class BookmarkFragment : Fragment() {
                     val posts = response.body()
                     posts?.let {
                         bookmarkPosts.addAll(it);
+                        SetPostAdapter()
                     }
                     println(posts)
 
@@ -98,7 +98,7 @@ class BookmarkFragment : Fragment() {
 
             return bookmarkPosts
         }
-    }
+
     private fun SetPostAdapter() {
         adapter = PostAdapter(bookmarkPosts)
         binding.bookmarkRecycleView.adapter = adapter

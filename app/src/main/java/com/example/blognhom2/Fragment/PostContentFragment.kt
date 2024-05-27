@@ -45,7 +45,20 @@ class PostContentFragment : Fragment() {
         val view = binding.root
         return view
     }
+    fun BookmarkManager(){
+        binding.BookMarkBtn.setOnClickListener {
+            if (isBookmarkPost.value == true) {
+                println("In bookmark")
+                removePostFromBookmark()
+                isBookmarkPost.value = false
+            } else {
+                println("Not in bookmark")
+                addPostToBookmark()
+                isBookmarkPost.value = true
+            }
+        }
 
+    }
 //    kt post co trong bookmark hay khong
     private fun checkPostInBookmark() {
         var isInBookmark = false;
@@ -83,6 +96,7 @@ class PostContentFragment : Fragment() {
                     val body = response.body()
                     if (body != null) {
                         isBookmarkPost.value = body.status
+                        binding.BookMarkBtn.isChecked = isBookmarkPost.value!!
                     }
                 }
 
@@ -193,20 +207,7 @@ class PostContentFragment : Fragment() {
         this.post = post
     }
 
-    fun BookmarkManager(){
-        binding.BookMarkBtn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isBookmarkPost.value == true) {
-                println("In bookmark")
-                removePostFromBookmark()
-                isBookmarkPost.value = false
-            }
-            else {
-                println("Not in bookmark")
-                addPostToBookmark()
-                isBookmarkPost.value = true
-            }
-        }
-    }
+
 
     fun SetDataForPostContent(){
         binding.postTitle.text = "      "+ post.title
@@ -221,8 +222,5 @@ class PostContentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    fun addPostToBookmarks(){
-
     }
 }
