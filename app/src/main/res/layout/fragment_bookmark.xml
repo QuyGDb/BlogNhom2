@@ -27,13 +27,12 @@
                android:id="@+id/textView2"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:fontFamily="@font/alata"
+               android:layout_marginTop="4dp"
                android:text="My Bookmarks"
                android:textColor="@color/black"
-               android:textSize="30dp"
+               android:textSize="20dp"
                android:textStyle="bold"
                app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintHorizontal_bias="0.0"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent" />
        </androidx.constraintlayout.widget.ConstraintLayout>
