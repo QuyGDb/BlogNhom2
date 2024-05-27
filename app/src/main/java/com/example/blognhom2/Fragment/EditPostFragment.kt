@@ -141,7 +141,7 @@ class EditPostFragment : Fragment() {
 
             }
         });
-
+//
         binding.edSubmitBtn.setOnClickListener {
             val title = binding.edTitle.text.toString()
             val content = binding.edContent.text.toString()

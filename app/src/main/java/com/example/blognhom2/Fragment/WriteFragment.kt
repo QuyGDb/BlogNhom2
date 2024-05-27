@@ -133,7 +133,7 @@ class WriteFragment : Fragment() {
             }
         }
 
-        //Set dafaut image View
+//        Set dafaut image View
 //        Glide.with(this)
 //            .load(imageUrl)
 //            .into(binding.wImage)
