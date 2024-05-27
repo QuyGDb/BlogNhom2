@@ -98,6 +98,7 @@ class HomeFragment : Fragment() {
                     }
                     SetPostAdapter()
                     loadAnimation()
+
                 }
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)

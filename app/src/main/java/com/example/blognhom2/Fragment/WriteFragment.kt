@@ -1,31 +1,47 @@
 package com.example.blognhom2.Fragment
 
-import android.R
+//import com.google.firebase.database.DatabaseReference
+//import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.storage.FirebaseStorage
+//import com.google.firebase.storage.StorageReference
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
+import android.webkit.MimeTypeMap
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
+import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.util.Util
+import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.databinding.FragmentWriteBinding
 import com.example.blognhom2.model.Category
+import com.example.blognhom2.model.FileFormat
 import com.example.blognhom2.model.MyPost
-import com.example.blognhom2.model.PostInfo
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.example.blognhom2.model.ResponseFormat
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.bumptech.glide.Glide
-import java.time.LocalDate
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.sql.DriverManager
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +60,9 @@ class WriteFragment : Fragment() {
 
     var imgUrl: String? = ""
 
-    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
+
+//    val imageUrl = "https://firebasestorage.googleapis.com/v0/b/android-97dcb.appspot.com/o/Images%2F-Nyj1Hv14lQZoY5s9ABS?alt=media&token=8443ca3a-4c60-4adc-8a3e-a5ee46a1d98f"
+    val imageUrl = ""
 
     private var categoriesList = mutableListOf<Category>()
 
@@ -55,7 +73,7 @@ class WriteFragment : Fragment() {
     private lateinit var storageRef: StorageReference
 
     private var uri: Uri? = null
-
+    private val REQUEST_CODE = 100;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,19 +95,65 @@ class WriteFragment : Fragment() {
         prepareData()
 
         //Pick image action
-        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            binding.wImage.setImageURI(it)
-            if (it != null) {
-                uri = it
+
+        val pickImage = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+
+            if (uri != null) {
+                binding.wImage.setImageURI(uri)
+                val file = createTempFile(uri)
+                val requestBody = file.asRequestBody("image/${file.extension}".toMediaTypeOrNull())
+                val multipartBody = MultipartBody.Part.createFormData("file", file.name, requestBody)
+
+                val httpClient = OkHttpClient.Builder()
+                    .addInterceptor { chain ->
+                        val original: Request = chain.request()
+                        val requestBuilder = original.newBuilder()
+                        requestBuilder.addHeader("Content-Type", "multipart/form-data")
+
+                        val request = requestBuilder.build()
+                        chain.proceed(request)
+                    }
+                    .build()
+
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:8081/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient)
+                    .build()
+                val api = retrofit.create(PostApi::class.java)
+
+                val call = api.uploadImage(multipartBody)
+                println("filename: ${file.name}")
+                call.enqueue(object : Callback<FileFormat> {
+                    override fun onResponse(call: Call<FileFormat>, response: Response<FileFormat>) {
+                        println(response)
+                        if(!response.isSuccessful){
+                            println("Code ${response.code()}")
+                            return;
+                        }
+                        imgUrl = response.body()?.imageUrl;
+                        println("ImageURL: $imgUrl")
+                    }
+
+                    override fun onFailure(call: Call<FileFormat>, t: Throwable) {
+                        println("Error: ${t.message}")
+                    }
+                })
+
             }
         }
 
         //Set dafaut image View
-        Glide.with(this)
-            .load(imageUrl)
-            .into(binding.wImage)
+
+//        Glide.with(this)
+//            .load(imageUrl)
+//            .into(binding.wImage)
 
         binding.wPickImgBtn.setOnClickListener{
+            println("upload iMage")
+
             pickImage.launch("image/*")
         }
 
@@ -97,7 +161,7 @@ class WriteFragment : Fragment() {
         binding.wSubmitBtn.setOnClickListener {
             val title = binding.wTitle.text.toString()
             val content = binding.wContent.text.toString()
-            val category = "categoriesList[0].category"
+            val category = categoriesList[0].category
             if (title.isNotEmpty() && content.isNotEmpty()) saveData(title, content, category)
         }
 
@@ -107,28 +171,69 @@ class WriteFragment : Fragment() {
         return binding.root
     }
 
-    private fun saveData(title: String, content: String, category: String) {
-        val id = firebaseRef.push().key!!
-        var post : MyPost
-        uri?.let {
-            storageRef.child(id).putFile(it)
-                .addOnSuccessListener {task ->
-                    task.metadata!!.reference!!.downloadUrl
-                        .addOnSuccessListener {url ->
-                            Toast.makeText(requireContext(), "Image success", Toast.LENGTH_LONG).show()
-                            imgUrl = url.toString()
-                            val today = LocalDate.now()
-
-                            val year = today.year
-                            val month = today.monthValue // Returns month as an enum (e.g., MAY)
-                            val dayOfMonth = today.dayOfMonth
-                            val formattedDate = "$year-${month}-${dayOfMonth}"
-
-                            //Post cần up lên
-                            post = MyPost(title, imageUrl, content, category, formattedDate)
-                        }
-                }
+    private fun createTempFile(uri: Uri): File {
+        val inputStream = context?.contentResolver?.openInputStream(uri)
+        if (inputStream != null) {
+            val file = File.createTempFile("image", ".jpg")
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            outputStream.close()
+            return file
+        } else {
+            throw FileNotFoundException()
         }
+    }
+    private fun saveData(title: String, content: String, category: String) {
+
+        val postInfo: MyPost = MyPost(null, imgUrl, title, category, content);
+
+        println(postInfo)
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original: Request = chain.request()
+                val requestBuilder = original.newBuilder()
+
+                // Get the cookies for this URL
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+
+                DriverManager.println("Cookies $cookies")
+                if (cookies != null) {
+                    // Add the cookies to the request header
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+
+        val api = retrofit.create(BlogOwnerApi::class.java)
+        val call = api.createPost(postInfo)
+        call.enqueue(object : Callback<ResponseFormat> {
+            override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
+                println("ResponsePost")
+                println(response)
+                if (!response.isSuccessful) {
+                    println("Code: " + response.code())
+                    return
+                }
+
+                val status = response.body()
+
+                println(status)
+
+            }
+            override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
+                println(t.message)
+            }
+        })
+
     }
 
     private fun prepareData(){

@@ -32,7 +32,7 @@ interface BlogOwnerApi {
 
     //    create post
     @PUT("/blogOwner/posts")
-    fun createPost(@Body post: PostInfo): Call<ResponseFormat>
+    fun createPost(@Body post: MyPost): Call<ResponseFormat>
 
     //    update post
     @POST("/blogOwner/posts")

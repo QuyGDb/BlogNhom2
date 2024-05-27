@@ -6,7 +6,7 @@ data class PostInfo (
     val user : String,
     val time : String,
     val img : String,
-    val title : String,
+    var title : String,
     val category: String,
     val content: String,
     val status: String

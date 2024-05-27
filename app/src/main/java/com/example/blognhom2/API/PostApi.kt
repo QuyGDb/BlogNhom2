@@ -1,10 +1,9 @@
 package com.example.blognhom2.API
 
 import com.example.blognhom2.model.*
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PostApi {
 
@@ -23,4 +22,7 @@ interface PostApi {
     @GET("/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>
 
+    @Multipart
+    @POST("/posts/upload")
+    fun uploadImage(@Part file: MultipartBody.Part): Call<FileFormat>
 }
