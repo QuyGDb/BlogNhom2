@@ -1,5 +1,6 @@
 package com.example.blognhom2.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostAdapter
+import com.example.blognhom2.LoginActivity
 import com.example.blognhom2.databinding.FragmentProfileBinding
 import com.example.blognhom2.model.PostInfo
 import retrofit2.Call
@@ -17,9 +19,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-
-
 class ProfileFragment : Fragment() {
     private var isLoading = false
     private var visibleThreshold = 5 // Number of items from the bottom of the list at which loading more is triggered
@@ -27,9 +26,9 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
 
-    lateinit var adapter : PostAdapter
+    lateinit var adapter: PostAdapter
     // This property is only valid between onCreateView and
-// onDestroyView.
+    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,13 +40,18 @@ class ProfileFragment : Fragment() {
 
         preparePostData()
         SetPostAdapter()
+
+        // Set up logout button click listener
+        binding.logoutButton.setOnClickListener {
+            logout()
+        }
+
         // Inflate the layout for this fragment
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     private var postList = mutableListOf<PostInfo>()
-    private fun preparePostData() : List<PostInfo> {
+    private fun preparePostData(): List<PostInfo> {
         postList.clear()
 
         val retrofit = Retrofit.Builder()
@@ -84,10 +88,11 @@ class ProfileFragment : Fragment() {
     private fun updateAdapter() {
         adapter.setFilteredList(postList)
     }
-    private fun SetPostAdapter(){
+
+    private fun SetPostAdapter() {
         adapter = PostAdapter(postList)
         binding.PostRecyclerView.adapter = adapter
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.PostRecyclerView.layoutManager = layoutManager
 
         // Add the onScrollListener to your RecyclerView
@@ -139,4 +144,16 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    private fun logout() {
+        // Clear user session data here (e.g., shared preferences)
+        // Navigate back to login or home screen
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
