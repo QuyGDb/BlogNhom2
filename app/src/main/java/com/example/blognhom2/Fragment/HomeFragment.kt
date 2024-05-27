@@ -51,7 +51,6 @@ class HomeFragment : Fragment() {
     fun initImageView() {
         val imageList = ArrayList<SlideModel>() // Create image list
 
-
         imageList.add(SlideModel("https://kenh14cdn.com/thumb_w/660/203336854389633024/2022/5/25/photo-1-1653461340935426739125.jpg", "Chào bạn dã đến với blog của nhóm 2 chúng tôi."))
         imageList.add(SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct."))
         imageList.add(SlideModel("https://bit.ly/3fLJf72", "And people do that."))

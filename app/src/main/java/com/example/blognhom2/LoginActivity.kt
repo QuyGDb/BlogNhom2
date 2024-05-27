@@ -28,13 +28,16 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.loginButton.setOnClickListener {
-            val email = binding.loginEmail.text.toString()
-            val password = binding.loginPassword.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                prepare(email, password)
-            } else {
-                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
-            }
+//            val email = binding.loginEmail.text.toString()
+//            val password = binding.loginPassword.text.toString()
+//            if (email.isNotEmpty() && password.isNotEmpty()) {
+//                prepare(email, password)
+//            } else {
+//                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+//            }
+            val mainIntent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(mainIntent)
+            finish() // Close the LoginActivity
         }
 
         binding.forgotPassword.setOnClickListener {
