@@ -13,7 +13,9 @@ interface BlogOwnerApi {
     fun isInBookmark(@Query("postID") postID: Int): Call<ResponseFormat>
     @GET("/blogOwner/bookmarks/posts")
     fun getPostsInBookmarks(@Query("page") page: Int): Call<List<PostInfo>>
-
+    //    get posts
+    @GET("/blogOwner/posts")
+    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
     @POST("/blogOwner/bookmarks/posts")
     fun addPostToBookmarks(@Body post: PostInfo): Call<ResponseFormat>
 
@@ -29,15 +31,14 @@ interface BlogOwnerApi {
     //get posts by category
     @GET("/blogOwner/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>
-    //    get posts
-    @GET("/blogOwner/posts")
-    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
+
+
     //    create post
     @PUT("/blogOwner/posts")
     fun createPost(@Body post: MyPost): Call<ResponseFormat>
 
     //    update post
     @POST("/blogOwner/posts")
-    fun updatePost(@Body post: PostInfo): Call<ResponseFormat>
+    fun updatePost(@Body post: MyPost): Call<ResponseFormat>
 
 }
