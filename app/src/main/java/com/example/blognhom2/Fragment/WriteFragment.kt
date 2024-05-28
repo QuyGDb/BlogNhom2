@@ -1,9 +1,5 @@
 package com.example.blognhom2.Fragment
 
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
-//import com.google.firebase.storage.FirebaseStorage
-//import com.google.firebase.storage.StorageReference
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
-import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentWriteBinding
 import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.FileFormat
@@ -39,10 +34,6 @@ import java.sql.DriverManager
 
 
 class WriteFragment : Fragment() {
-
-//    val fragmentManager = requireActivity().supportFragmentManager
-//    val fragmentTransaction = fragmentManager.beginTransaction()
-//    val fragmentProfile = ProfileFragment()
 
     var imgUrl: String? = ""
     private var categoriesList = mutableListOf<Category>()
@@ -93,9 +84,9 @@ class WriteFragment : Fragment() {
                         println(response)
                         if(!response.isSuccessful){
                             println("Code ${response.code()}")
-                            return;
+                            return
                         }
-                        imgUrl = response.body()?.imageUrl;
+                        imgUrl = response.body()?.imageUrl
                         println("ImageURL: $imgUrl")
                     }
 
@@ -105,11 +96,6 @@ class WriteFragment : Fragment() {
                 })
             }
         }
-
-        //Set dafaut image View
-//        Glide.with(this)
-//            .load(imageUrl)
-//            .into(binding.wImage)
 
         binding.wPickImgBtn.setOnClickListener{
             println("upload iMage")
@@ -145,7 +131,7 @@ class WriteFragment : Fragment() {
     }
     //    update post
     private fun updateUserPost(id: Int, title: String, content: String, category: String) {
-        val postInfo: MyPost = MyPost(id, imgUrl, title, category, content);
+        val postInfo: MyPost = MyPost(id, imgUrl, title, category, content)
         val httpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val original: Request = chain.request()
@@ -190,7 +176,7 @@ class WriteFragment : Fragment() {
 
     //    add new post
     private fun saveData(title: String, content: String, category: String) {
-        val postInfo: MyPost = MyPost(null, imgUrl, title, category, content);
+        val postInfo: MyPost = MyPost(null, imgUrl, title, category, content)
 
         println(postInfo)
         val httpClient = OkHttpClient.Builder()
@@ -238,11 +224,6 @@ class WriteFragment : Fragment() {
                 println(t.message)
             }
         })
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        val fragmentProfile = ProfileFragment()
-        fragmentTransaction.replace(R.id.frame_layout, fragmentProfile)
-        fragmentTransaction.commit()
     }
 
     private fun prepareData(){
@@ -252,7 +233,7 @@ class WriteFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(PostApi::class.java)
-        var call = api.getCategories();
+        var call = api.getCategories()
         call.enqueue(object : Callback<List<Category>> {
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
                 println("ResponsePost")

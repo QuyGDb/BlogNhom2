@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blognhom2.API.AdminApi
-import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostConfirmAdapter
-import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentComfirmPostBinding
 import com.example.blognhom2.model.PostInfo
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
@@ -23,7 +21,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.sql.DriverManager
-import java.util.*
 
 
 class ConfirmPostFragment : Fragment() {
@@ -84,7 +81,7 @@ class ConfirmPostFragment : Fragment() {
             .client(httpClient)
             .build()
         val api = retrofit.create(AdminApi::class.java)
-        val call = api.getPendingPosts(0);
+        val call = api.getPendingPosts(0)
 
         call.enqueue(object : Callback<List<PostInfo>> {
             override fun onResponse(call: Call<List<PostInfo>>, response: Response<List<PostInfo>>) {
@@ -97,7 +94,7 @@ class ConfirmPostFragment : Fragment() {
 
                 val posts = response.body()
                 posts?.let {
-                    postList.addAll(it);
+                    postList.addAll(it)
                 }
                 SetPostAdapter()
                 //updateAdapter()
@@ -142,12 +139,30 @@ class ConfirmPostFragment : Fragment() {
         offset += 1
 
         // Call your API here
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val orginal : Request = chain.request()
+                val requestBuilder = orginal.newBuilder()
+
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+
+                DriverManager.println("Cookies $cookies")
+                if(cookies != null) {
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8081/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
             .build()
-        val api = retrofit.create(PostApi::class.java)
-        val call = api.getPosts(offset)
+        val api = retrofit.create(AdminApi::class.java)
+        val call = api.getPendingPosts(offset)
 
         call.enqueue(object : Callback<List<PostInfo>> {
             override fun onResponse(call: Call<List<PostInfo>>, response: Response<List<PostInfo>>) {
