@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
+import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentWriteBinding
 import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.FileFormat
 import com.example.blognhom2.model.MyPost
 import com.example.blognhom2.model.ResponseFormat
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -101,14 +102,14 @@ class WriteFragment : Fragment() {
             println("upload iMage")
             pickImage.launch("image/*")
         }
-
         //Upload post Logic
         binding.wSubmitBtn.setOnClickListener {
             val title = binding.wTitle.text.toString()
             val content = binding.wContent.text.toString()
             val category = categoriesList[0].category
             if (title.isNotEmpty() && content.isNotEmpty()) saveData(title, content, category)
-            else Toast.makeText(requireContext(), "Please Fill ALl Data", Toast.LENGTH_LONG).show()
+            else Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please fill all data", Snackbar.LENGTH_LONG).show()
+
         }
 
 
@@ -131,7 +132,7 @@ class WriteFragment : Fragment() {
     }
     //    update post
     private fun updateUserPost(id: Int, title: String, content: String, category: String) {
-        val postInfo: MyPost = MyPost(id, imgUrl, title, category, content)
+        val postInfo: MyPost = MyPost(id, imgUrl, title, category, content);
         val httpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val original: Request = chain.request()
@@ -224,6 +225,8 @@ class WriteFragment : Fragment() {
                 println(t.message)
             }
         })
+
+        completSavePost()
     }
 
     private fun prepareData(){
@@ -258,6 +261,17 @@ class WriteFragment : Fragment() {
         })
     }
 
+    private fun completSavePost() {
+        Snackbar.make(requireActivity().findViewById(android.R.id.content), "Success !!!", Snackbar.LENGTH_LONG).show()
+        resetData()
+    }
+
+    private fun resetData() {
+        binding.wTitle.setText("")
+        binding.wContent.setText("")
+        binding.wCategoies.setSelection(0)
+        binding.wImage.setImageResource(R.drawable.background)
+    }
     private fun SetCategoriesAdapter(){
         val categoryStrings = if (categoriesList.isEmpty()) {
             // Handle empty list case (e.g., empty array or default message)
