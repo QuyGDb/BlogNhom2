@@ -4,16 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Adapter.PostAdapter
+import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentHomeBinding
 import com.example.blognhom2.model.PostInfo
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,11 +49,17 @@ class HomeFragment : Fragment() {
 
         initImageView()
         SetSearchView()
+        SetPostAdapter()
         preparePostData()
-        SetPostAdapter();
+
         // Inflate the layout for this fragment
         val view = binding.root
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
     fun initImageView() {
         val imageList = ArrayList<SlideModel>() // Create image list
@@ -63,7 +76,6 @@ class HomeFragment : Fragment() {
 
         private fun preparePostData() : List<PostInfo> {
             postList.clear()
-
             val retrofit = Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -84,9 +96,12 @@ class HomeFragment : Fragment() {
                     posts?.let {
                         postList.addAll(it);
                     }
-                    updateAdapter()
-                }
 
+                    loadAnimation()
+                    SetPostAdapter()
+
+
+                }
                 override fun onFailure(call: Call<List<PostInfo>>, t: Throwable) {
                     println(t.message)
                 }
@@ -103,7 +118,7 @@ class HomeFragment : Fragment() {
         binding.PostRecyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         binding.PostRecyclerView.layoutManager = layoutManager
-
+        binding.PostRecyclerView.itemAnimator = SlideInDownAnimator()
         // Add the onScrollListener to your RecyclerView
         binding.PostRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -142,6 +157,7 @@ class HomeFragment : Fragment() {
                         postList.addAll(it)
                         adapter.notifyDataSetChanged()
                     }
+
                 }
                 isLoading = false
             }
@@ -152,6 +168,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
 
     private fun SetSearchView(){
         binding.seachView.clearFocus()
@@ -215,7 +232,16 @@ class HomeFragment : Fragment() {
             }
         })
     }
+    fun loadAnimation(){
+        binding.PostRecyclerView.itemAnimator = SlideInDownAnimator().apply {
+            addDuration = 500 // Duration for add animations
+            removeDuration = 500 // Duration for remove animations
+            moveDuration = 500 // Duration for move animations
+            changeDuration = 500 // Duration for change animations
+        }
 
+        binding.PostRecyclerView.scheduleLayoutAnimation()
+    }
 
 
     override fun onDestroyView() {

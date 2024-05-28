@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "517298007941",
+    "project_id": "blognhom2-ce819",
+    "storage_bucket": "blognhom2-ce819.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517298007941:android:34e9c6587acc9b3b431eec",
+        "android_client_info": {
+          "package_name": "com.example.blognhom2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7x9mCtOi8N4cH2I-KwEuTxmcAN9tthIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
