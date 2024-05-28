@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.WriteFragment">
+    tools:context=".Fragment.EditPostFragment">
 
     <EditText
-        android:id="@+id/wTitle"
+        android:id="@+id/edTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -18,52 +18,53 @@
         tools:layout_editor_absoluteX="36dp" />
 
     <ImageView
-        android:id="@+id/wImage"
+        android:id="@+id/edImage"
         android:layout_width="wrap_content"
-        android:layout_height="256dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="4dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/wPickImgBtn"
+        app:layout_constraintBottom_toTopOf="@+id/edPickImgBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wTitle"
+        app:layout_constraintTop_toBottomOf="@+id/edTitle"
         app:srcCompat="@drawable/background" />
 
     <Button
-        android:id="@+id/wPickImgBtn"
+        android:id="@+id/edPickImgBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pick Img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wImage" />
+        app:layout_constraintTop_toBottomOf="@+id/edImage" />
 
     <Spinner
-        android:id="@+id/wCategoies"
+        android:id="@+id/edCategoies"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="50dp"
         android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@+id/wPickImgBtn"
+        app:layout_constraintTop_toBottomOf="@+id/edPickImgBtn"
         tools:layout_editor_absoluteX="0dp" />
 
     <EditText
-        android:id="@+id/wContent"
+        android:id="@+id/edContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top"
         android:hint="Content"
         android:inputType="textMultiLine"
-        android:singleLine="false"
-        app:layout_constraintBottom_toTopOf="@+id/wSubmitBtn"
-        app:layout_constraintTop_toBottomOf="@+id/wCategoies"
+        app:layout_constraintBottom_toTopOf="@+id/edSubmitBtn"
+        app:layout_constraintTop_toBottomOf="@+id/edCategoies"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/wSubmitBtn"
+        android:id="@+id/edSubmitBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
