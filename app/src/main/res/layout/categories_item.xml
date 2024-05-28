@@ -24,7 +24,8 @@
             android:id="@+id/categoriesTxt"
             android:layout_width="390dp"
             android:layout_height="150dp"
-            android:textColor="@color/black"
+            android:textColor="@color/lavender"
+            android:textStyle="bold"
             android:gravity="center"
             android:textSize="50sp"
 
