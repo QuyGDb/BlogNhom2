@@ -1,27 +1,21 @@
 package com.example.blognhom2.Fragment
 
-//import com.google.firebase.database.DatabaseReference
-//import com.google.firebase.database.FirebaseDatabase
-//import com.google.firebase.storage.FirebaseStorage
-//import com.google.firebase.storage.StorageReference
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
-import com.example.blognhom2.R
-import com.example.blognhom2.databinding.FragmentWriteBinding
-import com.example.blognhom2.model.Category
-import com.example.blognhom2.model.FileFormat
-import com.example.blognhom2.model.MyPost
-import com.example.blognhom2.model.ResponseFormat
+import com.example.blognhom2.databinding.FragmentEditPostBinding
+import com.example.blognhom2.model.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -37,33 +31,32 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.sql.DriverManager
 
+class EditPostFragment : Fragment() {
 
-class WriteFragment : Fragment() {
-
-//    val fragmentManager = requireActivity().supportFragmentManager
-//    val fragmentTransaction = fragmentManager.beginTransaction()
-//    val fragmentProfile = ProfileFragment()
+    private var _binding: FragmentEditPostBinding? = null
 
     var imgUrl: String? = ""
+    private var categoryId: Int? = null
     private var categoriesList = mutableListOf<Category>()
-    private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var post: PostInfo
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentWriteBinding.inflate(inflater, container, false)
+        // Inflate the layout for this fragment
+        _binding = FragmentEditPostBinding.inflate(inflater, container, false)
         prepareData()
+        setDataForEditFragment()
 
-        //Pick image action
         val pickImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
 
             if (uri != null) {
-                binding.wImage.setImageURI(uri)
+                binding.edImage.setImageURI(uri)
                 val file = createTempFile(uri)
                 val requestBody = file.asRequestBody("image/${file.extension}".toMediaTypeOrNull())
                 val multipartBody = MultipartBody.Part.createFormData("file", file.name, requestBody)
@@ -106,44 +99,76 @@ class WriteFragment : Fragment() {
             }
         }
 
-        //Set dafaut image View
-//        Glide.with(this)
-//            .load(imageUrl)
-//            .into(binding.wImage)
-
-        binding.wPickImgBtn.setOnClickListener{
+        binding.edPickImgBtn.setOnClickListener{
             println("upload iMage")
             pickImage.launch("image/*")
+            pickImage.launch("image/*")
         }
+        binding.edCategoies.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //Toast.makeText(requireContext(), position, Toast.LENGTH_LONG).show()
+                categoryId = position
+            }
 
-        //Upload post Logic
-        binding.wSubmitBtn.setOnClickListener {
-            val title = binding.wTitle.text.toString()
-            val content = binding.wContent.text.toString()
-            val category = categoriesList[0].category
-            if (title.isNotEmpty() && content.isNotEmpty()) saveData(title, content, category)
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        });
+//
+        binding.edSubmitBtn.setOnClickListener {
+            val title = binding.edTitle.text.toString()
+            val content = binding.edContent.text.toString()
+            val category = categoriesList[categoryId!!].category
+            if (title.isNotEmpty() && content.isNotEmpty()) updateData(post.id, title, content, category)
             else Toast.makeText(requireContext(), "Please Fill ALl Data", Toast.LENGTH_LONG).show()
         }
-
-
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
-    private fun createTempFile(uri: Uri): File {
-        val inputStream = context?.contentResolver?.openInputStream(uri)
-        if (inputStream != null) {
-            val file = File.createTempFile("image", ".jpg")
-            val outputStream = FileOutputStream(file)
-            inputStream.copyTo(outputStream)
-            outputStream.close()
-            return file
-        } else {
-            throw FileNotFoundException()
-        }
+    fun setData(post: PostInfo) {
+        this.post = post
     }
-    //    update post
+    private fun prepareData(){
+        categoriesList.clear()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val api = retrofit.create(PostApi::class.java)
+        var call = api.getCategories();
+        call.enqueue(object : Callback<List<Category>> {
+            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+                println("ResponsePost")
+                println(response)
+                if (!response.isSuccessful) {
+                    println("Code: " + response.code())
+                    return
+                }
+
+                val categories = response.body()
+                println(categories)
+                categories?.let {
+                    categoriesList.addAll(it)
+                }
+                SetCategoriesAdapter()
+
+            }
+
+            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+                println(t.message)
+            }
+        })
+    }
+
+    private fun updateData(postId: Int, title: String, content: String, category: String) {
+        updateUserPost(postId, title, content, category)
+    }
+
     private fun updateUserPost(id: Int, title: String, content: String, category: String) {
         val postInfo: MyPost = MyPost(id, imgUrl, title, category, content);
         val httpClient = OkHttpClient.Builder()
@@ -187,96 +212,35 @@ class WriteFragment : Fragment() {
         })
     }
 
-
-    //    add new post
-    private fun saveData(title: String, content: String, category: String) {
-        val postInfo: MyPost = MyPost(null, imgUrl, title, category, content);
-
-        println(postInfo)
-        val httpClient = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val original: Request = chain.request()
-                val requestBuilder = original.newBuilder()
-
-                // Get the cookies for this URL
-                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
-
-                DriverManager.println("Cookies $cookies")
-                if (cookies != null) {
-                    // Add the cookies to the request header
-                    requestBuilder.addHeader("Cookie", cookies)
-                }
-
-                val request = requestBuilder.build()
-                chain.proceed(request)
-            }
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8081/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient)
-            .build()
-
-        val api = retrofit.create(BlogOwnerApi::class.java)
-        val call = api.createPost(postInfo)
-        call.enqueue(object : Callback<ResponseFormat> {
-            override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
-                println("ResponsePost")
-                println(response)
-                if (!response.isSuccessful) {
-                    println("Code: " + response.code())
-                    return
-                }
-
-                val status = response.body()
-
-                println(status)
-
-            }
-            override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
-                println(t.message)
-            }
-        })
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        val fragmentProfile = ProfileFragment()
-        fragmentTransaction.replace(R.id.frame_layout, fragmentProfile)
-        fragmentTransaction.commit()
+    private fun createTempFile(uri: Uri): File {
+        val inputStream = context?.contentResolver?.openInputStream(uri)
+        if (inputStream != null) {
+            val file = File.createTempFile("image", ".jpg")
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            outputStream.close()
+            return file
+        } else {
+            throw FileNotFoundException()
+        }
     }
 
-    private fun prepareData(){
-        categoriesList.clear()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8081/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(PostApi::class.java)
-        var call = api.getCategories();
-        call.enqueue(object : Callback<List<Category>> {
-            override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
-                println("ResponsePost")
-                println(response)
-                if (!response.isSuccessful) {
-                    println("Code: " + response.code())
-                    return
-                }
+    fun setDataForEditFragment() {
+        binding.edTitle.setText(post.title)
+        Glide.with(this)
+            .load(post.img)
+            .into(binding.edImage)
 
-                val categories = response.body()
-                println(categories)
-                categories?.let {
-                    categoriesList.addAll(it)
-                }
-                SetCategoriesAdapter()
-
-            }
-
-            override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                println(t.message)
-            }
-        })
+//        val adapter = binding.edCategoies.adapter as ArrayAdapter<String>
+//        val stringList = mutableListOf<String>()
+//        for (i in 0 until adapter.count) {
+//            stringList.add(adapter.getItem(i)!!)
+//        }
+//        val defaultPosition = stringList.indexOf(post.category)
+//        categoryId = defaultPosition
+//        binding.edCategoies.setSelection(defaultPosition)
+        binding.edContent.setText(post.content)
     }
-
     private fun SetCategoriesAdapter(){
         val categoryStrings = if (categoriesList.isEmpty()) {
             // Handle empty list case (e.g., empty array or default message)
@@ -286,7 +250,6 @@ class WriteFragment : Fragment() {
         }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryStrings)
         //val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryStrings)
-        binding.wCategoies.adapter = adapter
+        binding.edCategoies.adapter = adapter
     }
-
 }

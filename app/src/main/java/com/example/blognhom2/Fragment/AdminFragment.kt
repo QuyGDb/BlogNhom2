@@ -32,7 +32,7 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.allPosts_btn).setOnClickListener {
+        view.findViewById<Button>(R.id.button2).setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, AllPostsFragment())
                 .addToBackStack(null)

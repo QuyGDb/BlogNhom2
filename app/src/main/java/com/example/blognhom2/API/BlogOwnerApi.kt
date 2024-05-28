@@ -13,7 +13,8 @@ interface BlogOwnerApi {
     fun isInBookmark(@Query("postID") postID: Int): Call<ResponseFormat>
     @GET("/blogOwner/bookmarks/posts")
     fun getPostsInBookmarks(@Query("page") page: Int): Call<List<PostInfo>>
-
+    @GET("/blogOwner/posts")
+    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
     @POST("/blogOwner/bookmarks/posts")
     fun addPostToBookmarks(@Body post: PostInfo): Call<ResponseFormat>
 
@@ -36,6 +37,6 @@ interface BlogOwnerApi {
 
     //    update post
     @POST("/blogOwner/posts")
-    fun updatePost(@Body post: PostInfo): Call<ResponseFormat>
+    fun updatePost(@Body post: MyPost): Call<ResponseFormat>
 
 }
