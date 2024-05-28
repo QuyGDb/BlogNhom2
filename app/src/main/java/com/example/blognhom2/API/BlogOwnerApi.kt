@@ -29,7 +29,9 @@ interface BlogOwnerApi {
     //get posts by category
     @GET("/blogOwner/posts/category/{category}")
     fun getPostsByCategory(@Path("category") category: String, @Query("page") page: Int): Call<List<PostInfo>>
-
+    //    get posts
+    @GET("/blogOwner/posts")
+    fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
     //    create post
     @PUT("/blogOwner/posts")
     fun createPost(@Body post: MyPost): Call<ResponseFormat>

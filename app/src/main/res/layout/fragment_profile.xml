@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/username">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/allPosts_btn"
+                        android:id="@+id/allPosts"
                         style="@android:style/Widget.Button"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"

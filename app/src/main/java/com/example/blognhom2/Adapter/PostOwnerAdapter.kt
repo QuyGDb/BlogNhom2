@@ -43,12 +43,8 @@ class PostOwnerAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<Pos
 
     override fun onBindViewHolder(holder: PostOwnerAdapter.PostOwnerViewHolder, position: Int) {
         holder.itemView.apply {
-            holder.postLayout.startAnimation(
-                AnimationUtils.loadAnimation(
-                    holder.itemView.context,
-                    R.anim.anim
-                )
-            )
+
+
             holder.postTitle.text = genericList[position].title
             holder.postTime.text = genericList[position].time
             holder.postCategory.text = genericList[position].category
