@@ -18,6 +18,7 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.sql.DriverManager.println
 
+var userRole: String?= null
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
@@ -97,6 +98,9 @@ class LoginActivity : AppCompatActivity() {
                 }
                 val user = response.body()
                 if (user != null) {
+
+                    userRole = user.roles[0]
+
                     Log.d("LoginActivity", "User authenticated: $user")
                     // Handle the authenticated user here
                     val setCookieHeader = response.headers()["Set-Cookie"]

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.blognhom2.Fragment.PostContentFragment
+import com.example.blognhom2.Fragment.EditPostFragment
 import com.example.blognhom2.R
 import com.example.blognhom2.model.PostInfo
 
@@ -56,7 +56,7 @@ class PostOwnerAdapter(var postList : List<PostInfo>) : RecyclerView.Adapter<Pos
             setOnClickListener {
                 val post = genericList[position]
 
-                val fragment = PostContentFragment() // chuyển đến fragment edit post
+                val fragment = EditPostFragment() // chuyển đến fragment edit post
                 fragment.setData(post)
                 val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.frame_layout, fragment)
