@@ -134,6 +134,7 @@ class EditPostFragment : Fragment() {
 
     fun setData(post: PostInfo) {
         this.post = post
+        imgUrl = post.img
     }
     private fun completeUpdatePost() {
         Snackbar.make(
