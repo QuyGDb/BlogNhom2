@@ -13,13 +13,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Title"
+        android:fontFamily="@font/san_francisco"
         android:inputType="text"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="36dp" />
 
     <ImageView
         android:id="@+id/wImage"
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="200dp"
         android:layout_marginBottom="4dp"
         android:scaleType="centerCrop"
@@ -57,6 +58,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:fontFamily="@font/san_francisco"
         android:gravity="top"
         android:hint="Content"
         android:inputType="textMultiLine"
@@ -75,7 +77,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/custom_button"
         android:text="Submit"
-        android:textColor="#FFFFFF"
+        android:textColor="#AC7CE6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

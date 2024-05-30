@@ -43,7 +43,7 @@ class PostPendingContentFragment : Fragment() {
         }
         binding.confirmBtn.setOnClickListener {
             confirmPost()
-            returnFragment()
+
 
         }
         // Inflate the layout for this fragment
@@ -122,7 +122,7 @@ class PostPendingContentFragment : Fragment() {
                 }
 
                 val status = response.body()
-
+                returnFragment()
                 println(status)
 
 

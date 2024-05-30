@@ -14,8 +14,10 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
+import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentEditPostBinding
 import com.example.blognhom2.model.*
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -132,7 +134,13 @@ class EditPostFragment : Fragment() {
 
     fun setData(post: PostInfo) {
         this.post = post
-        imgUrl = post.img
+    }
+    private fun completeUpdatePost() {
+        Snackbar.make(
+            requireActivity().findViewById(android.R.id.content),
+            "Update Success !!!",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
     private fun prepareData(){
         categoriesList.clear()
@@ -211,6 +219,7 @@ class EditPostFragment : Fragment() {
                 println(t.message)
             }
         })
+        completeUpdatePost()
     }
 
     private fun createTempFile(uri: Uri): File {

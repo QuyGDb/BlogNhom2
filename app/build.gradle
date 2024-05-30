@@ -38,6 +38,9 @@ android {
         ext.kotlin_version = '1.7.1'
 
     }
+    compileOptions {
+        encoding "UTF-8"
+    }
 }
 
 dependencies {

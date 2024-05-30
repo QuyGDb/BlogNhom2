@@ -47,8 +47,16 @@ class WriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentWriteBinding.inflate(inflater, container, false)
+
         prepareData()
 
+        uploadPostEventHandler()
+
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    fun uploadPostEventHandler(){
         //Pick image action
         val pickImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
@@ -111,13 +119,7 @@ class WriteFragment : Fragment() {
             else Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please fill all data", Snackbar.LENGTH_LONG).show()
 
         }
-
-
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
-
     private fun createTempFile(uri: Uri): File {
         val inputStream = context?.contentResolver?.openInputStream(uri)
         if (inputStream != null) {
