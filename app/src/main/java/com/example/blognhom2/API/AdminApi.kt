@@ -1,5 +1,6 @@
 package com.example.blognhom2.API
 
+import com.example.blognhom2.model.MyCategory
 import com.example.blognhom2.model.PostInfo
 import com.example.blognhom2.model.ResponseFormat
 import retrofit2.Call
@@ -15,6 +16,21 @@ interface AdminApi {
     //    create post
     @PUT("/admin/posts")
     fun createPost(@Body post: PostInfo): Call<ResponseFormat>
+
+    //    delete Post
+    @DELETE("/admin/posts")
+    fun deletePost(@Query("postID") postID: Int): Call<ResponseFormat>
+
+    //    add category
+    @PUT("/admin/categories")
+    fun addCategory(@Body category: MyCategory): Call<ResponseFormat>
+    //    update category
+    @PUT("/admin/categories")
+    fun updateCategory(@Body category: MyCategory): Call<ResponseFormat>
+    //    delete category
+    @DELETE("/admin/categories")
+    fun deleteCategory(@Query("categoryID") categoryID: Int): Call<ResponseFormat>
+
 
     //    update post
     @POST("/admin/posts")

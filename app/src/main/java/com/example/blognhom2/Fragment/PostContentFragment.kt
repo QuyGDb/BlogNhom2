@@ -1,7 +1,6 @@
 package com.example.blognhom2.Fragment
 
 import android.os.Bundle
-import android.os.Debug
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,7 @@ import android.webkit.CookieManager
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.example.blognhom2.API.BlogOwnerApi
-import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.databinding.FragmentPostContentBinding
-import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.PostInfo
 import com.example.blognhom2.model.ResponseFormat
 import okhttp3.OkHttpClient

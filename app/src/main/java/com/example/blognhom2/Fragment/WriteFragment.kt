@@ -13,7 +13,6 @@ import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentWriteBinding
-import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.FileFormat
 import com.example.blognhom2.model.MyPost
 import com.example.blognhom2.model.ResponseFormat
