@@ -16,6 +16,14 @@ interface BlogOwnerApi {
     //    get posts
     @GET("/blogOwner/posts")
     fun getPosts(@Query("page") page: Int): Call<List<PostInfo>>
+
+
+    //    delete Post
+    @DELETE("/blogOwner/posts")
+    fun deletePost(@Query("postID") postID: Int): Call<ResponseFormat>
+
+
+
     @POST("/blogOwner/bookmarks/posts")
     fun addPostToBookmarks(@Body post: PostInfo): Call<ResponseFormat>
 
