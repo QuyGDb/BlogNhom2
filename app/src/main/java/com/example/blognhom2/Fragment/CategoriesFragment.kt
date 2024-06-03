@@ -13,6 +13,7 @@ import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.API.UnsplashApi
 import com.example.blognhom2.Adapter.CategoriesAdapter
 import com.example.blognhom2.databinding.FragmentCategoriesBinding
+import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.PostInfo
 import com.example.blognhom2.model.SearchResult
 import retrofit2.Call
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class CategoriesFragment : Fragment() {
-    private var categoriesList = mutableListOf<Category>()
+
     private var posts = mutableListOf<PostInfo>()
     lateinit var adapter: CategoriesAdapter
     private var _binding: FragmentCategoriesBinding? = null
@@ -41,6 +42,7 @@ class CategoriesFragment : Fragment() {
         return view
     }
 
+    private var categoriesList = mutableListOf<Category>()
     private fun getPostByCategory(){
         categoriesList.clear()
         val retrofit = Retrofit.Builder()

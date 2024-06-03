@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.Fragment.CategoriesFragment
 import com.example.blognhom2.R
+import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.PostInfo
 import retrofit2.Call
 import retrofit2.Callback

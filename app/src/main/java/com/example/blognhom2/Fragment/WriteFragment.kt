@@ -13,6 +13,7 @@ import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.R
 import com.example.blognhom2.databinding.FragmentWriteBinding
+import com.example.blognhom2.model.Category
 import com.example.blognhom2.model.FileFormat
 import com.example.blognhom2.model.MyPost
 import com.example.blognhom2.model.ResponseFormat
@@ -36,7 +37,8 @@ import java.sql.DriverManager
 class WriteFragment : Fragment() {
 
     var imgUrl: String? = ""
-    private var categoriesList = mutableListOf<Category>()
+    private var categoriesList = mutableListOf<
+            Category>()
     private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
 
