@@ -93,7 +93,7 @@
                         android:drawableStart="@drawable/baseline_forward_24"
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
-                        android:text="Duyệt bài"
+                        android:text="Confirm Post"
                         android:textAlignment="viewStart"
                         android:textSize="18sp"
                         android:textStyle="bold" />
