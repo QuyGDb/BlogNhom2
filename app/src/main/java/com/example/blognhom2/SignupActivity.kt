@@ -61,7 +61,7 @@ class SignupActivity : AppCompatActivity() {
                 Log.d("SignupActivity", "Response: ${response.message()}")
                 if (!response.isSuccessful) {
                     Log.e("SignupActivity", "Code: ${response.code()}")
-                    Toast.makeText(this@SignupActivity, "Registration failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignupActivity, "${response.body()?.error}", Toast.LENGTH_SHORT).show()
                     return
                 }
 
