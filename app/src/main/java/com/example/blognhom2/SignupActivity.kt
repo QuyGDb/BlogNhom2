@@ -23,7 +23,10 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        registerHandleException()
+    }
 
+    fun registerHandleException(){
         binding.signupButton.setOnClickListener {
             val email = binding.signupEmail.text.toString()
             val password = binding.signupPassword.text.toString()
@@ -52,7 +55,6 @@ class SignupActivity : AppCompatActivity() {
             startActivity(loginIntent)
         }
     }
-
     private fun isValidPassword(password: String): Boolean {
         val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$")
         return passwordRegex.matches(password)
