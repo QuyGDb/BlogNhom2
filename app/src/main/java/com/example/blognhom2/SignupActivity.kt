@@ -30,10 +30,17 @@ class SignupActivity : AppCompatActivity() {
             val confirmPassword = binding.signupConfirm.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                if (password == confirmPassword) {
-                    prepare(email, password)
+                // More robust password validation
+                if (password.length < 8)
+                {
+                    Toast.makeText(this, "The minimum length of the password is 8 characters", Toast.LENGTH_SHORT).show()
+                }
+                else if (!isValidPassword(password)) {
+                    Toast.makeText(this, "Password must contain uppercase letters, lowercase letters, special characters and numbers", Toast.LENGTH_SHORT).show()
+                } else if (password != confirmPassword) {
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show()
+                    prepare(email, password)
                 }
             } else {
                 Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
@@ -44,6 +51,11 @@ class SignupActivity : AppCompatActivity() {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
         }
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$")
+        return passwordRegex.matches(password)
     }
 
     private fun prepare(username: String, password: String) {
