@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/categoryEditText"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint=" Nhập thể loại vào đây"
