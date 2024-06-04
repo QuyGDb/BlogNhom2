@@ -87,6 +87,7 @@ class SignupActivity : AppCompatActivity() {
                     return
                 }
 
+
                 val status = response.body()?.status
                 if (status == true) {
                     Toast.makeText(this@SignupActivity, "Registration successful", Toast.LENGTH_SHORT).show()
