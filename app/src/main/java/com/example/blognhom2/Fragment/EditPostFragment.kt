@@ -142,7 +142,7 @@ class EditPostFragment : Fragment() {
 
     fun returnFragment() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, HomeFragment())
+            .replace(R.id.frame_layout, OwnerPostFragment())
             .addToBackStack(null)
             .commit()
     }
