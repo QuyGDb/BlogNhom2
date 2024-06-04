@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class CategoriesFragment : Fragment() {
-    private var categoriesList = mutableListOf<Category>()
+
     private var posts = mutableListOf<PostInfo>()
     lateinit var adapter: CategoriesAdapter
     private var _binding: FragmentCategoriesBinding? = null
@@ -42,6 +42,7 @@ class CategoriesFragment : Fragment() {
         return view
     }
 
+    private var categoriesList = mutableListOf<Category>()
     private fun getPostByCategory(){
         categoriesList.clear()
         val retrofit = Retrofit.Builder()

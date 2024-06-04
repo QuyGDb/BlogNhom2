@@ -2,6 +2,7 @@ package com.example.blognhom2.Fragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.blognhom2.API.AdminApi
 import com.example.blognhom2.API.BlogOwnerApi
 import com.example.blognhom2.API.PostApi
 import com.example.blognhom2.R
@@ -106,6 +109,11 @@ class EditPostFragment : Fragment() {
             pickImage.launch("image/*")
             pickImage.launch("image/*")
         }
+
+        binding.edDeleteBtn.setOnClickListener {
+            showDialog()
+        }
+
         binding.edCategoies.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -132,6 +140,29 @@ class EditPostFragment : Fragment() {
         return binding.root
     }
 
+    fun returnFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, HomeFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+    fun showDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("DELETE ?")
+        builder.setMessage("Do you want to Delete?")
+        builder.setPositiveButton("OK") { dialog, which ->
+            deletePost()
+            returnFragment()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            // Handle negative button click (e.g., dismiss dialog)
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
     fun setData(post: PostInfo) {
         this.post = post
         imgUrl = post.img
@@ -143,6 +174,57 @@ class EditPostFragment : Fragment() {
             Snackbar.LENGTH_LONG
         ).show()
     }
+
+    fun deletePost() {
+        println("abc")
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val original: Request = chain.request()
+                val requestBuilder = original.newBuilder()
+
+                // Get the cookies for this URL
+                val cookies = CookieManager.getInstance().getCookie("http://10.0.2.2:8081/")
+
+                DriverManager.println("Cookies $cookies")
+                if (cookies != null) {
+                    // Add the cookies to the request header
+                    requestBuilder.addHeader("Cookie", cookies)
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8081/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+
+        val api = retrofit.create(BlogOwnerApi::class.java)
+        val call = api.deletePost(post.id)
+        call.enqueue(object : Callback<ResponseFormat> {
+            override fun onResponse(call: Call<ResponseFormat>, response: Response<ResponseFormat>) {
+                println("ResponsePost")
+                println(response)
+                if (!response.isSuccessful) {
+                    println("Code: " + response.code())
+                    //Log.e("decode", response.errorBody().toString())
+                    return
+                }
+
+                val status = response.body()
+
+                println(status)
+
+            }
+            override fun onFailure(call: Call<ResponseFormat>, t: Throwable) {
+                println(t.message)
+            }
+        })
+    }
+
     private fun prepareData(){
         categoriesList.clear()
         val retrofit = Retrofit.Builder()

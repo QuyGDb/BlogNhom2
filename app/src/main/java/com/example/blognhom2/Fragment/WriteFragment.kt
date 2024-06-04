@@ -37,7 +37,8 @@ import java.sql.DriverManager
 class WriteFragment : Fragment() {
 
     var imgUrl: String? = ""
-    private var categoriesList = mutableListOf<Category>()
+    private var categoriesList = mutableListOf<
+            Category>()
     private var _binding: FragmentWriteBinding? = null
     private val binding get() = _binding!!
 
