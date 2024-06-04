@@ -9,6 +9,8 @@ import com.example.blognhom2.API.AuthenticationAPI
 import com.example.blognhom2.databinding.ActivitySignupBinding
 import com.example.blognhom2.model.ResponseFormat
 import com.example.blognhom2.model.User
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +45,7 @@ class SignupActivity : AppCompatActivity() {
                     prepare(email, password)
                 }
             } else {
-                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Username or password or confirm password cannot be empty", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -73,7 +75,15 @@ class SignupActivity : AppCompatActivity() {
                 Log.d("SignupActivity", "Response: ${response.message()}")
                 if (!response.isSuccessful) {
                     Log.e("SignupActivity", "Code: ${response.code()}")
-                    Toast.makeText(this@SignupActivity, "${response.body()?.error}", Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()
+                    if (errorBody != null) {
+                        val gson = Gson()
+                        val errorObject = gson.fromJson(errorBody.charStream(), JsonObject::class.java)
+                        val errorMessage = errorObject.get("error").asString
+                        Log.e("SignupActivity", "Error message: $errorMessage")
+                        Toast.makeText(this@SignupActivity, "$errorMessage", Toast.LENGTH_SHORT).show()
+                    }
+
                     return
                 }
 
