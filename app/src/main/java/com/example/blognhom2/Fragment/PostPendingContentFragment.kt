@@ -37,7 +37,6 @@ class PostPendingContentFragment : Fragment() {
         _binding = FragmentPostPendingContentBinding.inflate(inflater, container, false)
         SetDataForPostContent()
         binding.cancelBtn.setOnClickListener {
-            cancelPost()
             showDialog()
             //returnFragment()
         }
@@ -63,6 +62,7 @@ class PostPendingContentFragment : Fragment() {
         builder.setTitle("CANCEL ?")
         builder.setMessage("Do you want cancel?")
         builder.setPositiveButton("OK") { dialog, which ->
+            cancelPost()
             returnFragment()
             dialog.dismiss()
         }
